@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    5-element bottom nav: 4 fixed tabs (Home, Inventory, History, Settings)
+    plus a raised center FAB for "New Transaction". The FAB sits in a white
+    ring 12dp above the bar, overlapping it so it reads as elevated.
+
+    The bar root is a FrameLayout sized wrap_content; its height is driven
+    by the nav-row + the FAB overflow. WindowInsets are applied at the bar
+    paddingBottom in BottomNav.bind() so we float above the gesture bar.
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clipChildren="false"
+    android:clipToPadding="false">
+
+    <!-- Bar background + tab row -->
+    <LinearLayout
+        android:id="@+id/nav_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginTop="22dp"
+        android:background="@drawable/bg_nav_bar"
+        android:elevation="6dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="6dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="12dp"
+        android:weightSum="5">
+
+        <!-- Home -->
+        <LinearLayout
+            android:id="@+id/nav_home"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingVertical="6dp">
+
+            <FrameLayout
+                android:id="@+id/pill_home"
+                android:layout_width="44dp"
+                android:layout_height="32dp">
+
+                <ImageView
+                    android:id="@+id/icon_home"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/nav_home"
+                    android:src="@drawable/ic_nav_home" />
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/label_home"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="@string/nav_home"
+                android:textColor="@color/text_secondary"
+                android:textSize="11sp" />
+        </LinearLayout>
+
+        <!-- Inventory -->
+        <LinearLayout
+            android:id="@+id/nav_inventory"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingVertical="6dp">
+
+            <FrameLayout
+                android:id="@+id/pill_inventory"
+                android:layout_width="44dp"
+                android:layout_height="32dp">
+
+                <ImageView
+                    android:id="@+id/icon_inventory"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/nav_inventory"
+                    android:src="@drawable/ic_nav_inventory" />
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/label_inventory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="@string/nav_inventory"
+                android:textColor="@color/text_secondary"
+                android:textSize="11sp" />
+        </LinearLayout>
+
+        <!-- Center FAB slot — empty in the row; the FAB itself is overlaid
+             on top of the bar via the parent FrameLayout. The slot reserves
+             the same 1× weight so the surrounding tabs stay evenly spaced. -->
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
+        <!-- History -->
+        <LinearLayout
+            android:id="@+id/nav_history"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingVertical="6dp">
+
+            <FrameLayout
+                android:id="@+id/pill_history"
+                android:layout_width="44dp"
+                android:layout_height="32dp">
+
+                <ImageView
+                    android:id="@+id/icon_history"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/nav_history"
+                    android:src="@drawable/ic_nav_history" />
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/label_history"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="@string/nav_history"
+                android:textColor="@color/text_secondary"
+                android:textSize="11sp" />
+        </LinearLayout>
+
+        <!-- Settings -->
+        <LinearLayout
+            android:id="@+id/nav_settings"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingVertical="6dp">
+
+            <FrameLayout
+                android:id="@+id/pill_settings"
+                android:layout_width="44dp"
+                android:layout_height="32dp">
+
+                <ImageView
+                    android:id="@+id/icon_settings"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/nav_settings"
+                    android:src="@drawable/ic_nav_settings" />
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/label_settings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="@string/nav_settings"
+                android:textColor="@color/text_secondary"
+                android:textSize="11sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Raised center FAB for New Transaction. Two layers:
+         (1) outer white ring that punches through the bar visually,
+         (2) primary-colored inner circle with the plus icon. -->
+    <FrameLayout
+        android:id="@+id/nav_fab"
+        android:layout_width="68dp"
+        android:layout_height="68dp"
+        android:layout_gravity="top|center_horizontal"
+        android:background="@drawable/bg_nav_fab_ring"
+        android:contentDescription="@string/nav_new_transaction"
+        android:elevation="10dp">
+
+        <View
+            android:layout_width="58dp"
+            android:layout_height="58dp"
+            android:layout_gravity="center"
+            android:background="@drawable/bg_nav_fab" />
+
+        <ImageView
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_nav_plus" />
+    </FrameLayout>
+</FrameLayout>

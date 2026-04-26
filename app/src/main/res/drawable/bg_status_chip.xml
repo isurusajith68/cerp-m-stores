@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generic pill background; tinted at runtime via setColorFilter on the
+     parent or a runtime DrawableCompat tint. Kept neutral so each status
+     can supply its own color. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="#FFF1DD" />
+    <corners android:radius="999dp" />
+</shape>

@@ -1,0 +1,20 @@
+*.iml
+.gradle/
+.kotlin/
+.idea/
+local.properties
+
+.DS_Store
+**/build/
+/captures
+.externalNativeBuild
+.cxx
+
+# Signing keys — never commit
+*.jks
+*.keystore
+*.jks.base64.txt
+
+# Auto-generated docs
+*.md
+*.log
