@@ -23,6 +23,8 @@ import com.ceyinfo.cerpstores.ui.issue.IssueListActivity
 import com.ceyinfo.cerpstores.ui.login.LoginActivity
 import com.ceyinfo.cerpstores.ui.transfer.TransferListActivity
 import com.ceyinfo.cerpstores.ui.verification.VerificationListActivity
+import com.ceyinfo.cerpstores.updater.AppUpdater
+import com.ceyinfo.cerpstores.updater.UpdateDialog
 import com.ceyinfo.cerpstores.util.SessionManager
 import com.google.android.material.card.MaterialCardView
 import kotlinx.coroutines.launch
@@ -58,6 +60,23 @@ class DashboardActivity : AppCompatActivity() {
             refreshPermissionsAndTiles { binding.swipeRefresh.isRefreshing = false }
         }
         binding.swipeRefresh.setColorSchemeResources(R.color.primary)
+
+        checkForUpdates()
+    }
+
+    /**
+     * Throttled background update check (4h between calls — see AppUpdater).
+     * If a newer release is available and the user hasn't skipped it, the
+     * UpdateDialog prompts to download. Failures are silent.
+     */
+    private fun checkForUpdates() {
+        lifecycleScope.launch {
+            val updater = AppUpdater(this@DashboardActivity)
+            val release = updater.checkForUpdate()
+            if (release != null) {
+                UpdateDialog.show(this@DashboardActivity, release, updater)
+            }
+        }
     }
 
     override fun onResume() {
