@@ -4,6 +4,9 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
 
     <application
         android:name=".StoresApp"
@@ -44,12 +47,66 @@
             android:theme="@style/Theme.Stores.NoActionBar" />
 
         <activity
+            android:name=".ui.inventory.InventoryActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.Stores.NoActionBar" />
+
+        <activity
             android:name=".ui.grn.GrnDetailActivity"
             android:theme="@style/Theme.Stores.NoActionBar" />
 
         <activity
             android:name=".ui.grn.GrnCreateActivity"
             android:theme="@style/Theme.Stores.NoActionBar" />
+
+        <activity
+            android:name=".ui.verification.VerificationListActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.Stores.NoActionBar" />
+
+        <activity
+            android:name=".ui.verification.VerificationDetailActivity"
+            android:theme="@style/Theme.Stores.NoActionBar" />
+
+        <activity
+            android:name=".ui.verification.VerificationCreateActivity"
+            android:theme="@style/Theme.Stores.NoActionBar" />
+
+        <activity
+            android:name=".ui.issue.IssueListActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.Stores.NoActionBar" />
+
+        <activity
+            android:name=".ui.issue.IssueDetailActivity"
+            android:theme="@style/Theme.Stores.NoActionBar" />
+
+        <activity
+            android:name=".ui.issue.IssueCreateActivity"
+            android:theme="@style/Theme.Stores.NoActionBar" />
+
+        <activity
+            android:name=".ui.transfer.TransferListActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.Stores.NoActionBar" />
+
+        <activity
+            android:name=".ui.transfer.TransferDetailActivity"
+            android:theme="@style/Theme.Stores.NoActionBar" />
+
+        <activity
+            android:name=".ui.transfer.TransferCreateActivity"
+            android:theme="@style/Theme.Stores.NoActionBar" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
 
     </application>
 

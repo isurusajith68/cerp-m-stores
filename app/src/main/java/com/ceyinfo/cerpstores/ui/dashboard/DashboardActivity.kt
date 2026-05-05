@@ -19,7 +19,9 @@ import com.ceyinfo.cerpstores.data.remote.ApiClient
 import com.ceyinfo.cerpstores.databinding.ActivityDashboardBinding
 import com.ceyinfo.cerpstores.ui.common.BottomNav
 import com.ceyinfo.cerpstores.ui.grn.GrnListActivity
+import com.ceyinfo.cerpstores.ui.issue.IssueListActivity
 import com.ceyinfo.cerpstores.ui.login.LoginActivity
+import com.ceyinfo.cerpstores.ui.verification.VerificationListActivity
 import com.ceyinfo.cerpstores.util.SessionManager
 import com.google.android.material.card.MaterialCardView
 import kotlinx.coroutines.launch
@@ -142,19 +144,21 @@ class DashboardActivity : AppCompatActivity() {
             R.drawable.ic_module_returns,     "#FCE7F3", "#DB2777", "material_return"),
         TileSpec(R.string.module_adjustments, R.string.module_adjustments_desc,
             R.drawable.ic_module_adjustments, "#D1FAE5", "#059669", "stock_adjustment"),
+        TileSpec(R.string.module_verification, R.string.module_verification_desc,
+            R.drawable.ic_module_verification, "#E0F2FE", "#0284C7", "verification"),
         TileSpec(R.string.module_stock,       R.string.module_stock_desc,
             R.drawable.ic_module_stock,       "#FFE4B8", "#F9972D", null),
     )
 
     private fun buildModuleTiles() {
-        val rows = listOf(binding.row1, binding.row2, binding.row3)
+        val rows = listOf(binding.row1, binding.row2, binding.row3, binding.row4)
         rows.forEach { it.removeAllViews() }
 
         val visible = tileSpecs.filter {
             it.entityCode == null || session.isEntityAllowed(it.entityCode)
         }
 
-        // 2-up grid. Spec index 0,1 → row1; 2,3 → row2; 4,5 → row3.
+        // 2-up grid. Spec index 0,1 → row1; 2,3 → row2; 4,5 → row3; 6,7 → row4.
         visible.forEachIndexed { idx, spec ->
             val row = rows[idx / 2]
             row.addView(
@@ -185,6 +189,8 @@ class DashboardActivity : AppCompatActivity() {
     private fun onTileTapped(spec: TileSpec) {
         when (spec.entityCode) {
             "grn" -> startActivity(Intent(this, GrnListActivity::class.java))
+            "store_issue" -> startActivity(Intent(this, IssueListActivity::class.java))
+            "verification" -> startActivity(Intent(this, VerificationListActivity::class.java))
             else -> Toast.makeText(
                 this,
                 "${getString(spec.titleRes)}: ${getString(R.string.coming_soon)}",

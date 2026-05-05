@@ -95,8 +95,20 @@
     <string name="grn_detail_remarks">Remarks</string>
     <string name="grn_action_submit">Submit</string>
     <string name="grn_action_approve">Approve</string>
-    <string name="grn_action_cancel">Cancel</string>
+    <string name="grn_action_recall">Recall</string>
+    <string name="grn_action_cancel">Cancel GRN</string>
     <string name="grn_action_reject">Reject</string>
+
+    <!-- Transition confirmation dialogs -->
+    <string name="grn_confirm_approve_title">Approve GRN?</string>
+    <string name="grn_confirm_approve_message">Approving will update stock levels for all line items. This cannot be undone.</string>
+    <string name="grn_confirm_recall_title">Recall submission?</string>
+    <string name="grn_confirm_recall_message">The GRN will be returned to Draft so you can edit it again.</string>
+    <string name="grn_confirm_cancel_title">Cancel GRN?</string>
+    <string name="grn_confirm_cancel_message">This GRN will be cancelled. Are you sure?</string>
+    <string name="grn_confirm_positive">Confirm</string>
+    <string name="grn_transition_success">GRN updated successfully.</string>
+    <string name="grn_transition_failed">Could not update GRN. Please try again.</string>
 
     <!-- GRN Create -->
     <string name="grn_create_title">New Goods Receipt</string>
@@ -147,4 +159,208 @@
     <string name="retry">Retry</string>
     <string name="cancel">Cancel</string>
     <string name="back">Back</string>
+
+    <!-- Stock verification -->
+    <string name="module_verification">Verify Stock</string>
+    <string name="module_verification_desc">Walk &amp; record physical stock</string>
+    <string name="action_verification">Stock Verification</string>
+    <string name="action_verification_desc">Capture what you find on the floor</string>
+
+    <string name="verification_list_title">Stock Verifications</string>
+    <string name="verification_list_subtitle">All physical stock walkthroughs</string>
+    <string name="verification_empty">No verifications yet. Tap + to start a walkthrough.</string>
+    <string name="verification_add_new">New Verification</string>
+
+    <string name="verification_detail_title">Stock Verification</string>
+    <string name="verification_detail_summary">Summary</string>
+    <string name="verification_detail_store">Store</string>
+    <string name="verification_detail_date">Date</string>
+    <string name="verification_detail_total_lines">Lines</string>
+    <string name="verification_detail_items">Verified Items</string>
+    <string name="verification_detail_no_items">No items recorded.</string>
+    <string name="verification_detail_remarks">Remarks</string>
+    <string name="verification_action_submit">Submit</string>
+    <string name="verification_action_approve">Approve</string>
+    <string name="verification_action_recall">Recall</string>
+    <string name="verification_action_cancel">Cancel</string>
+
+    <string name="verification_create_title">New Verification</string>
+    <string name="verification_create_subtitle">Walkthrough capture</string>
+    <string name="verification_field_date">Verification Date *</string>
+    <string name="verification_field_remarks">Remarks</string>
+    <string name="verification_lines_label">Items *</string>
+    <string name="verification_add_line">Add Item</string>
+    <string name="verification_lines_empty">No items yet. Tap "Add Item" for each item you observe.</string>
+    <string name="verification_save_draft">Save Draft</string>
+    <string name="verification_create_success">Verification saved as draft.</string>
+    <string name="verification_create_failed">Could not save verification. Please try again.</string>
+    <string name="verification_validation_date">Verification date is required.</string>
+    <string name="verification_validation_lines">Add at least one item.</string>
+
+    <!-- Verification line item entry -->
+    <string name="vline_title">Add Verified Item</string>
+    <string name="vline_pick_material">Pick from catalogue</string>
+    <string name="vline_freetext_mode">Item not in catalogue?</string>
+    <string name="vline_freetext_back">Back to catalogue</string>
+    <string name="vline_field_description">Description *</string>
+    <string name="vline_field_unit">Unit</string>
+    <string name="vline_field_unit_freetext">Unit (e.g. kg, pcs)</string>
+    <string name="vline_field_qty">Quantity *</string>
+    <string name="vline_field_serial">Item Serial No.</string>
+    <string name="vline_field_batch">Batch Number</string>
+    <string name="vline_field_remarks">Remarks</string>
+    <string name="vline_photo_placeholder">Photo capture coming soon</string>
+    <string name="vline_photo_capture">Tap to take photo</string>
+    <string name="vline_photo_optional">Optional · used as proof of count</string>
+    <string name="vline_photo_uploading">Uploading photo…</string>
+    <string name="vline_photo_failed">Photo upload failed. Tap to retry.</string>
+    <string name="vline_camera_permission_required">Camera permission needed to take a photo.</string>
+    <string name="vline_photo_camera">Camera</string>
+    <string name="vline_photo_gallery">Gallery</string>
+    <string name="vline_photo_section">Photos</string>
+    <string name="vline_photo_max_reached">Up to 5 photos per line. Remove one to add another.</string>
+    <string name="vline_save">Add to Verification</string>
+    <string name="vline_validation_description">Description is required.</string>
+    <string name="vline_validation_qty">Quantity must be greater than 0.</string>
+
+    <!-- Goods Issue list / detail -->
+    <string name="issue_list_title">Goods Issues</string>
+    <string name="issue_list_subtitle">All issues across your stores</string>
+    <string name="issue_filter_all">All</string>
+    <string name="issue_status_draft">Draft</string>
+    <string name="issue_status_submitted">Submitted</string>
+    <string name="issue_status_approved">Approved</string>
+    <string name="issue_status_cancelled">Cancelled</string>
+    <string name="issue_empty">No issues yet. Tap + to record a goods issue.</string>
+    <string name="issue_add_new">New Issue</string>
+
+    <string name="issue_detail_title">Goods Issue</string>
+    <string name="issue_detail_summary">Summary</string>
+    <string name="issue_detail_store">Store</string>
+    <string name="issue_detail_department">Department</string>
+    <string name="issue_detail_issued_to">Issued To</string>
+    <string name="issue_detail_date">Issue Date</string>
+    <string name="issue_detail_total_qty">Total Qty</string>
+    <string name="issue_detail_items">Line Items</string>
+    <string name="issue_detail_no_items">No items recorded.</string>
+    <string name="issue_detail_remarks">Remarks</string>
+    <string name="issue_action_submit">Submit</string>
+    <string name="issue_action_approve">Approve</string>
+    <string name="issue_action_cancel">Cancel</string>
+
+    <!-- Goods Issue create -->
+    <string name="issue_create_title">New Goods Issue</string>
+    <string name="issue_create_subtitle">Record material issue</string>
+    <string name="issue_field_date">Issue Date *</string>
+    <string name="issue_field_department">Department</string>
+    <string name="issue_field_issued_to">Issued To (Employee)</string>
+    <string name="issue_field_remarks">Remarks</string>
+    <string name="issue_select_department">Select department…</string>
+    <string name="issue_select_employee">Select employee…</string>
+    <string name="issue_lines_label">Items *</string>
+    <string name="issue_add_line">Add Item</string>
+    <string name="issue_lines_empty">No items yet. Tap "Add Item" to add materials.</string>
+    <string name="issue_submit_save">Save Draft</string>
+    <string name="issue_create_success">Issue saved as draft.</string>
+    <string name="issue_create_failed">Could not save issue. Please try again.</string>
+    <string name="issue_validation_lines">Add at least one line item.</string>
+
+    <!-- Issue line item sheet -->
+    <string name="issue_line_title">Add Item</string>
+    <string name="issue_line_field_material">Material *</string>
+    <string name="issue_line_select_material">Select material…</string>
+    <string name="issue_line_field_qty">Issued Qty *</string>
+    <string name="issue_line_field_batch">Batch Number</string>
+    <string name="issue_line_field_remarks">Remarks</string>
+    <string name="issue_line_save">Add to Issue</string>
+    <string name="issue_line_validation_material">Pick a material.</string>
+    <string name="issue_line_validation_qty">Quantity must be greater than 0.</string>
+
+    <!-- Department picker -->
+    <string name="department_picker_title">Select Department</string>
+    <string name="department_picker_search">Search departments…</string>
+    <string name="department_picker_empty">No departments found.</string>
+
+    <!-- Employee picker -->
+    <string name="employee_picker_title">Select Employee</string>
+    <string name="employee_picker_search">Search employees…</string>
+    <string name="employee_picker_empty">No employees found.</string>
+
+    <!-- Stock Transfer list / detail -->
+    <string name="transfer_list_title">Stock Transfers</string>
+    <string name="transfer_list_subtitle">All transfers across your stores</string>
+    <string name="transfer_filter_all">All</string>
+    <string name="transfer_status_draft">Draft</string>
+    <string name="transfer_status_in_transit">In Transit</string>
+    <string name="transfer_status_received">Received</string>
+    <string name="transfer_status_cancelled">Cancelled</string>
+    <string name="transfer_empty">No transfers yet. Tap + to create a stock transfer.</string>
+    <string name="transfer_add_new">New Transfer</string>
+
+    <string name="transfer_detail_title">Stock Transfer</string>
+    <string name="transfer_detail_summary">Summary</string>
+    <string name="transfer_detail_from_store">From Store</string>
+    <string name="transfer_detail_to_store">To Store</string>
+    <string name="transfer_detail_bu">Business Unit</string>
+    <string name="transfer_detail_date">Transfer Date</string>
+    <string name="transfer_detail_total_qty">Total Qty</string>
+    <string name="transfer_detail_items">Line Items</string>
+    <string name="transfer_detail_no_items">No items recorded.</string>
+    <string name="transfer_detail_remarks">Remarks</string>
+    <string name="transfer_action_dispatch">Dispatch</string>
+    <string name="transfer_action_receive">Mark Received</string>
+    <string name="transfer_action_cancel">Cancel Transfer</string>
+
+    <string name="transfer_transition_dispatched">Transfer dispatched successfully.</string>
+    <string name="transfer_transition_received">Transfer received successfully.</string>
+    <string name="transfer_transition_cancelled">Transfer cancelled.</string>
+    <string name="transfer_transition_updated">Transfer updated successfully.</string>
+    <string name="transfer_transition_failed">Could not update transfer. Please try again.</string>
+
+    <!-- Stock Transfer create -->
+    <string name="transfer_create_title">New Stock Transfer</string>
+    <string name="transfer_create_subtitle">Move stock between stores</string>
+    <string name="transfer_field_date">Transfer Date *</string>
+    <string name="transfer_field_to_store">To Store *</string>
+    <string name="transfer_field_remarks">Remarks</string>
+    <string name="transfer_select_to_store">Select destination store…</string>
+    <string name="transfer_select_to_store_title">Select Destination Store</string>
+    <string name="transfer_select_to_store_subtitle">Choose the store that will receive the stock.</string>
+    <string name="transfer_lines_label">Items *</string>
+    <string name="transfer_add_line">Add Item</string>
+    <string name="transfer_lines_empty">No items yet. Tap "Add Item" to select materials.</string>
+    <string name="transfer_submit_save">Save Draft</string>
+    <string name="transfer_create_success">Transfer saved as draft.</string>
+    <string name="transfer_create_failed">Could not save transfer. Please try again.</string>
+    <string name="transfer_validation_to_store">Select a destination store.</string>
+    <string name="transfer_validation_lines">Add at least one line item.</string>
+
+    <!-- Transfer line item sheet -->
+    <string name="transfer_line_title">Add Item</string>
+    <string name="transfer_line_field_material">Material *</string>
+    <string name="transfer_line_select_material">Select material…</string>
+    <string name="transfer_line_field_qty">Transfer Qty *</string>
+    <string name="transfer_line_field_batch">Batch Number</string>
+    <string name="transfer_line_field_remarks">Remarks</string>
+    <string name="transfer_line_save">Add to Transfer</string>
+    <string name="transfer_line_validation_material">Pick a material.</string>
+    <string name="transfer_line_validation_qty">Quantity must be greater than 0.</string>
+
+    <!-- Inventory tab -->
+    <string name="inventory_title">Inventory</string>
+    <string name="inventory_subtitle">Live stock from your stores</string>
+    <string name="inventory_search_hint">Search material, SKU, or batch</string>
+    <string name="inventory_filter_all">All</string>
+    <string name="inventory_filter_low_stock">Low stock</string>
+    <string name="inventory_filter_store_all">All stores</string>
+    <string name="inventory_filter_store_picker_title">Filter by store</string>
+    <string name="inventory_low_stock_badge">LOW</string>
+    <string name="inventory_qty_available">Available</string>
+    <string name="inventory_qty_on_hand">On hand: %1$s</string>
+    <string name="inventory_qty_reserved">Reserved: %1$s</string>
+    <string name="inventory_qty_min">Min: %1$s</string>
+    <string name="inventory_meta_separator"> · </string>
+    <string name="inventory_batch_label">Batch: %1$s</string>
+    <string name="inventory_empty">No stock to show. Try clearing filters.</string>
+    <string name="inventory_empty_search">No matches for that search.</string>
 </resources>

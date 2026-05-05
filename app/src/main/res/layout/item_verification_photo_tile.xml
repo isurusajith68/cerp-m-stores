@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- One thumbnail in the AddVerificationItemSheet's photo strip.
+     - Filled tile: thumbnail + × button to remove
+     - Pending tile: dim overlay + spinner while upload in flight -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="96dp"
+    android:layout_height="96dp"
+    android:layout_marginEnd="8dp">
+
+    <ImageView
+        android:id="@+id/photo_thumb"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_summary_card"
+        android:scaleType="centerCrop" />
+
+    <ImageView
+        android:id="@+id/btn_remove"
+        android:layout_width="26dp"
+        android:layout_height="26dp"
+        android:layout_gravity="top|end"
+        android:layout_margin="4dp"
+        android:background="@drawable/bg_photo_close"
+        android:contentDescription="@string/cancel"
+        android:padding="5dp"
+        android:rotation="45"
+        android:src="@drawable/ic_nav_plus"
+        android:tint="@color/white" />
+
+    <FrameLayout
+        android:id="@+id/upload_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/white" />
+    </FrameLayout>
+</FrameLayout>

@@ -10,6 +10,9 @@ import com.ceyinfo.cerpstores.data.model.MyStore
 import com.ceyinfo.cerpstores.databinding.ItemQuickActionBinding
 import com.ceyinfo.cerpstores.databinding.SheetNewTransactionBinding
 import com.ceyinfo.cerpstores.ui.grn.GrnCreateActivity
+import com.ceyinfo.cerpstores.ui.issue.IssueCreateActivity
+import com.ceyinfo.cerpstores.ui.transfer.TransferCreateActivity
+import com.ceyinfo.cerpstores.ui.verification.VerificationCreateActivity
 import com.ceyinfo.cerpstores.util.SessionManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
@@ -40,13 +43,15 @@ object NewTransactionSheet {
 
     private val allActions = listOf(
         Action(R.string.action_goods_receipt,  R.string.action_goods_receipt_desc,
-            R.drawable.ic_quick_grn,      "grn"),
+            R.drawable.ic_quick_grn,          "grn"),
         Action(R.string.action_goods_issue,    R.string.action_goods_issue_desc,
-            R.drawable.ic_quick_issue,    "store_issue"),
+            R.drawable.ic_quick_issue,        "store_issue"),
         Action(R.string.action_stock_transfer, R.string.action_stock_transfer_desc,
-            R.drawable.ic_quick_transfer, "stock_transfer"),
+            R.drawable.ic_quick_transfer,     "stock_transfer"),
         Action(R.string.action_return,         R.string.action_return_desc,
-            R.drawable.ic_quick_return,   "material_return"),
+            R.drawable.ic_quick_return,       "material_return"),
+        Action(R.string.action_verification,   R.string.action_verification_desc,
+            R.drawable.ic_quick_verification, "verification"),
     )
 
     fun show(activity: Activity) {
@@ -116,6 +121,21 @@ object NewTransactionSheet {
                 Intent(activity, GrnCreateActivity::class.java)
                     .putExtra(GrnCreateActivity.EXTRA_STORE_ID, store.storeId)
                     .putExtra(GrnCreateActivity.EXTRA_STORE_NAME, store.name)
+            )
+            "store_issue" -> activity.startActivity(
+                Intent(activity, IssueCreateActivity::class.java)
+                    .putExtra(IssueCreateActivity.EXTRA_STORE_ID, store.storeId)
+                    .putExtra(IssueCreateActivity.EXTRA_STORE_NAME, store.name)
+            )
+            "stock_transfer" -> activity.startActivity(
+                Intent(activity, TransferCreateActivity::class.java)
+                    .putExtra(TransferCreateActivity.EXTRA_STORE_ID, store.storeId)
+                    .putExtra(TransferCreateActivity.EXTRA_STORE_NAME, store.name)
+            )
+            "verification" -> activity.startActivity(
+                Intent(activity, VerificationCreateActivity::class.java)
+                    .putExtra(VerificationCreateActivity.EXTRA_STORE_ID, store.storeId)
+                    .putExtra(VerificationCreateActivity.EXTRA_STORE_NAME, store.name)
             )
             else -> Toast.makeText(
                 activity,

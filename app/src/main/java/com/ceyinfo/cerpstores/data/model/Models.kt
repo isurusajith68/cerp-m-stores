@@ -126,6 +126,7 @@ data class DashboardStats(
     @SerializedName("stock_transfers") val stockTransfers: EntityCounts = EntityCounts(),
     @SerializedName("material_returns") val materialReturns: EntityCounts = EntityCounts(),
     @SerializedName("stock_adjustments") val stockAdjustments: EntityCounts = EntityCounts(),
+    val verifications: EntityCounts = EntityCounts(),
     @SerializedName("low_stock_items") val lowStockItems: Int = 0
 )
 
@@ -236,4 +237,264 @@ data class GrnLineItem(
     @SerializedName("expiry_date") val expiryDate: String? = null,
     @SerializedName("manufacturing_date") val manufacturingDate: String? = null,
     val remarks: String? = null
+)
+
+// ── Stock Verification ───────────────────────────────────────────
+//
+// Header (`Verification`) shape is shared by list + detail responses;
+// `items` only populates on detail. Snapshot fields on items
+// (systemQuantityAtVerify, deltaQuantity) are populated only after the
+// header is APPROVED — they let the detail screen show the variance.
+
+data class Verification(
+    val id: String,
+    @SerializedName("verification_number") val verificationNumber: String,
+    @SerializedName("verification_date") val verificationDate: String? = null,
+    val status: String,
+    val remarks: String? = null,
+    @SerializedName("store_id") val storeId: String,
+    @SerializedName("store_name") val storeName: String? = null,
+    @SerializedName("store_code") val storeCode: String? = null,
+    @SerializedName("business_unit_id") val businessUnitId: String? = null,
+    @SerializedName("business_unit_name") val businessUnitName: String? = null,
+    @SerializedName("created_by") val createdBy: String? = null,
+    @SerializedName("created_at") val createdAt: String? = null,
+    @SerializedName("updated_at") val updatedAt: String? = null,
+    @SerializedName("submitted_at") val submittedAt: String? = null,
+    @SerializedName("approved_at") val approvedAt: String? = null,
+    @SerializedName("items_count") val itemsCount: Int? = null,
+    val items: List<VerificationItem>? = null
+)
+
+data class VerificationItem(
+    @SerializedName("verification_item_id") val verificationItemId: String,
+    @SerializedName("material_id") val materialId: String? = null,
+    @SerializedName("material_name") val materialName: String? = null,
+    @SerializedName("material_sku") val materialSku: String? = null,
+    val description: String,
+    @SerializedName("unit_id") val unitId: String? = null,
+    @SerializedName("unit_symbol") val unitSymbol: String? = null,
+    @SerializedName("verified_quantity") val verifiedQuantity: Double = 0.0,
+    @SerializedName("serial_number") val serialNumber: String? = null,
+    @SerializedName("batch_number") val batchNumber: String? = null,
+    @SerializedName("photo_urls") val photoUrls: List<String> = emptyList(),
+    @SerializedName("photo_paths") val photoPaths: List<String> = emptyList(),
+    @SerializedName("system_quantity_at_verify") val systemQuantityAtVerify: Double? = null,
+    @SerializedName("delta_quantity") val deltaQuantity: Double? = null,
+    val remarks: String? = null
+)
+
+data class CreateVerificationRequest(
+    @SerializedName("store_id") val storeId: String,
+    @SerializedName("verification_date") val verificationDate: String,
+    val remarks: String? = null,
+    val items: List<CreateVerificationItemRequest>
+)
+
+data class CreateVerificationItemRequest(
+    @SerializedName("material_id") val materialId: String? = null,
+    val description: String,
+    @SerializedName("unit_id") val unitId: String? = null,
+    @SerializedName("unit_symbol") val unitSymbol: String? = null,
+    @SerializedName("verified_quantity") val verifiedQuantity: Double,
+    @SerializedName("serial_number") val serialNumber: String? = null,
+    @SerializedName("batch_number") val batchNumber: String? = null,
+    @SerializedName("photo_urls") val photoUrls: List<String> = emptyList(),
+    @SerializedName("photo_paths") val photoPaths: List<String> = emptyList(),
+    val remarks: String? = null
+)
+
+/**
+ * Body for PATCH .../transition endpoints.
+ * [remarks] is optional — the backend currently ignores it for GRN/Issue/Verification,
+ * but including it here keeps the model wire-ready for when it's handled server-side.
+ */
+data class TransitionRequest(
+    val action: String,
+    val remarks: String? = null,
+)
+
+// ── Goods Issue ──────────────────────────────────────────────────────────────
+
+/**
+ * Row shape returned by `/store-mobile/issues` (list) and used as the header
+ * of `/store-mobile/issues/:id` (detail). The list view doesn't carry
+ * `items`; the detail view populates them from store_store_issue_details.
+ */
+data class Issue(
+    val id: String,
+    @SerializedName("issue_number") val issueNumber: String,
+    @SerializedName("issue_date") val issueDate: String? = null,
+    val status: String,
+    @SerializedName("total_quantity") val totalQuantity: Double = 0.0,
+    val remarks: String? = null,
+    @SerializedName("store_id") val storeId: String,
+    @SerializedName("store_name") val storeName: String? = null,
+    @SerializedName("store_code") val storeCode: String? = null,
+    @SerializedName("business_unit_id") val businessUnitId: String? = null,
+    @SerializedName("business_unit_name") val businessUnitName: String? = null,
+    @SerializedName("department_id") val departmentId: String? = null,
+    @SerializedName("department_name") val departmentName: String? = null,
+    @SerializedName("issued_to_id") val issuedToId: String? = null,
+    @SerializedName("issued_to_name") val issuedToName: String? = null,
+    @SerializedName("to_department") val toDepartment: String? = null,
+    @SerializedName("issued_to") val issuedTo: String? = null,
+    @SerializedName("items_count") val itemsCount: Int? = null,
+    @SerializedName("created_at") val createdAt: String? = null,
+    @SerializedName("updated_at") val updatedAt: String? = null,
+    // Detail-only
+    val items: List<IssueLineItem>? = null
+)
+
+data class IssueLineItem(
+    @SerializedName("issue_detail_id") val issueDetailId: String,
+    @SerializedName("material_id") val materialId: String? = null,
+    @SerializedName("material_name") val materialName: String? = null,
+    @SerializedName("material_sku") val materialSku: String? = null,
+    @SerializedName("unit_symbol") val unitSymbol: String? = null,
+    @SerializedName("issued_quantity") val issuedQuantity: Double = 0.0,
+    @SerializedName("batch_number") val batchNumber: String? = null,
+    @SerializedName("unit_price") val unitPrice: Double? = null,
+    val remarks: String? = null
+)
+
+data class CreateIssueRequest(
+    @SerializedName("store_id") val storeId: String,
+    @SerializedName("issue_date") val issueDate: String,
+    @SerializedName("department_id") val departmentId: String? = null,
+    @SerializedName("issued_to_id") val issuedToId: String? = null,
+    @SerializedName("to_department") val toDepartment: String? = null,
+    @SerializedName("issued_to") val issuedTo: String? = null,
+    @SerializedName("requisition_id") val requisitionId: String? = null,
+    val remarks: String? = null,
+    val items: List<CreateIssueLineRequest>
+)
+
+data class CreateIssueLineRequest(
+    @SerializedName("material_id") val materialId: String,
+    @SerializedName("issued_quantity") val issuedQuantity: Double,
+    @SerializedName("batch_number") val batchNumber: String? = null,
+    @SerializedName("unit_price") val unitPrice: Double? = null,
+    val remarks: String? = null
+)
+
+// ── Stock Transfer ───────────────────────────────────────────────────────────
+
+/**
+ * Row shape returned by `/store-mobile/transfers` (list) and as the header of
+ * `/store-mobile/transfers/:id` (detail). `items` is null on list responses.
+ */
+data class Transfer(
+    val id: String,
+    @SerializedName("transfer_number") val transferNumber: String,
+    @SerializedName("transfer_date") val transferDate: String? = null,
+    val status: String,
+    @SerializedName("total_quantity") val totalQuantity: Double = 0.0,
+    val remarks: String? = null,
+    @SerializedName("from_store_id") val fromStoreId: String,
+    @SerializedName("to_store_id") val toStoreId: String,
+    @SerializedName("from_store_name") val fromStoreName: String? = null,
+    @SerializedName("from_store_code") val fromStoreCode: String? = null,
+    @SerializedName("to_store_name") val toStoreName: String? = null,
+    @SerializedName("to_store_code") val toStoreCode: String? = null,
+    @SerializedName("business_unit_id") val businessUnitId: String? = null,
+    @SerializedName("business_unit_name") val businessUnitName: String? = null,
+    @SerializedName("received_at") val receivedAt: String? = null,
+    @SerializedName("created_at") val createdAt: String? = null,
+    @SerializedName("updated_at") val updatedAt: String? = null,
+    // Detail-only
+    val items: List<TransferLineItem>? = null
+)
+
+data class TransferLineItem(
+    @SerializedName("transfer_detail_id") val transferDetailId: String,
+    @SerializedName("material_id") val materialId: String? = null,
+    @SerializedName("material_name") val materialName: String? = null,
+    @SerializedName("material_sku") val materialSku: String? = null,
+    @SerializedName("unit_symbol") val unitSymbol: String? = null,
+    @SerializedName("transfer_quantity") val transferQuantity: Double = 0.0,
+    @SerializedName("received_quantity") val receivedQuantity: Double? = null,
+    @SerializedName("batch_number") val batchNumber: String? = null,
+    @SerializedName("unit_price") val unitPrice: Double? = null,
+    val remarks: String? = null
+)
+
+data class CreateTransferRequest(
+    @SerializedName("from_store_id") val fromStoreId: String,
+    @SerializedName("to_store_id") val toStoreId: String,
+    @SerializedName("transfer_date") val transferDate: String,
+    val remarks: String? = null,
+    val items: List<CreateTransferLineRequest>
+)
+
+data class CreateTransferLineRequest(
+    @SerializedName("material_id") val materialId: String,
+    @SerializedName("transfer_quantity") val transferQuantity: Double,
+    @SerializedName("batch_number") val batchNumber: String? = null,
+    @SerializedName("unit_price") val unitPrice: Double? = null,
+    val remarks: String? = null
+)
+
+/** Lightweight store entry used in the to-store picker. */
+data class StoreInfo(
+    @SerializedName("store_id") val storeId: String,
+    val code: String? = null,
+    val name: String,
+    val type: String? = null,
+    @SerializedName("business_unit_id") val businessUnitId: String? = null,
+    @SerializedName("business_unit_name") val businessUnitName: String? = null,
+    val location: String? = null
+)
+
+// ── HR Lookups ───────────────────────────────────────────────────────────────
+
+data class Department(
+    @SerializedName("department_id") val departmentId: String,
+    val name: String,
+    val code: String? = null
+)
+
+data class Employee(
+    @SerializedName("employee_id") val employeeId: String,
+    @SerializedName("employee_number") val employeeNumber: String? = null,
+    val name: String,
+    @SerializedName("department_name") val departmentName: String? = null
+)
+
+// ── Inventory ────────────────────────────────────────────────────
+//
+// One row per (store, material, batch) from store_stock_ledger. Batches
+// aren't aggregated — a material with three batches at one store is three
+// rows so the per-batch min_stock_level / available_quantity are honored.
+
+data class InventoryRow(
+    @SerializedName("ledger_id") val ledgerId: String,
+    @SerializedName("store_id") val storeId: String,
+    @SerializedName("store_name") val storeName: String? = null,
+    @SerializedName("store_code") val storeCode: String? = null,
+    @SerializedName("material_id") val materialId: String? = null,
+    @SerializedName("material_name") val materialName: String? = null,
+    @SerializedName("material_sku") val materialSku: String? = null,
+    @SerializedName("batch_number") val batchNumber: String? = null,
+    @SerializedName("quantity_on_hand") val quantityOnHand: Double = 0.0,
+    @SerializedName("available_quantity") val availableQuantity: Double = 0.0,
+    @SerializedName("reserved_quantity") val reservedQuantity: Double = 0.0,
+    @SerializedName("min_stock_level") val minStockLevel: Double? = null,
+    @SerializedName("is_low_stock") val isLowStock: Boolean = false,
+    @SerializedName("unit_symbol") val unitSymbol: String? = null,
+    @SerializedName("unit_name") val unitName: String? = null,
+    @SerializedName("last_transaction_date") val lastTransactionDate: String? = null,
+    @SerializedName("business_unit_id") val businessUnitId: String? = null,
+    @SerializedName("business_unit_name") val businessUnitName: String? = null
+)
+
+/**
+ * Reply shape for `POST /store-mobile/upload-photo`. `path` is the durable
+ * OSS object key (store on the row); `url` is a signed URL good for ~30
+ * days, fine for the immediate preview but the backend re-signs from path
+ * on every detail fetch so callers never see expired URLs.
+ */
+data class UploadedPhoto(
+    val path: String,
+    val url: String
 )

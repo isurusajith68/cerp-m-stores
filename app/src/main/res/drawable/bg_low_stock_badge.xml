@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Pill-shaped red badge for low-stock indicator on inventory rows. Sits
+     to the right of the material name, white text "LOW" inside. Color
+     matches @color/error so the rest of the app's "danger" surfaces feel
+     consistent (transition-failed toasts, voucher reject, etc.). -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/error" />
+    <corners android:radius="999dp" />
+</shape>

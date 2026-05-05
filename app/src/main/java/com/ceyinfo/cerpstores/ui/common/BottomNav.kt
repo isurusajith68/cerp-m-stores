@@ -13,6 +13,7 @@ import androidx.core.view.updatePadding
 import com.ceyinfo.cerpstores.R
 import com.ceyinfo.cerpstores.ui.dashboard.DashboardActivity
 import com.ceyinfo.cerpstores.ui.grn.GrnListActivity
+import com.ceyinfo.cerpstores.ui.inventory.InventoryActivity
 import com.ceyinfo.cerpstores.ui.settings.SettingsActivity
 
 /**
@@ -27,7 +28,7 @@ import com.ceyinfo.cerpstores.ui.settings.SettingsActivity
  * History today routes to GrnListActivity (the only entity with a list
  * screen). Once Issues / Transfers / Returns / Adjustments have list
  * activities, swap History's target for a tabbed wrapper that hosts all
- * five. Inventory remains stubbed with a toast until built.
+ * five. Inventory routes to InventoryActivity (read-only stock view).
  */
 object BottomNav {
 
@@ -61,7 +62,7 @@ object BottomNav {
             Item(Tab.HOME, R.id.pill_home, R.id.icon_home, R.id.label_home,
                 R.id.nav_home, DashboardActivity::class.java),
             Item(Tab.INVENTORY, R.id.pill_inventory, R.id.icon_inventory, R.id.label_inventory,
-                R.id.nav_inventory, null),
+                R.id.nav_inventory, InventoryActivity::class.java),
             Item(Tab.HISTORY, R.id.pill_history, R.id.icon_history, R.id.label_history,
                 R.id.nav_history, GrnListActivity::class.java),
             Item(Tab.SETTINGS, R.id.pill_settings, R.id.icon_settings, R.id.label_settings,
