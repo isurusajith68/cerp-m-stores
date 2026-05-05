@@ -6,13 +6,13 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ceyinfo.cerpstores.R
 import com.ceyinfo.cerpstores.data.model.Department
 import com.ceyinfo.cerpstores.data.remote.ApiClient
+import com.ceyinfo.cerpstores.databinding.ItemLookupRowBinding
 import com.ceyinfo.cerpstores.databinding.SheetDepartmentPickerBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.coroutines.Job
@@ -84,20 +84,18 @@ object DepartmentPickerSheet {
         private val onTap: (Department) -> Unit,
     ) : RecyclerView.Adapter<DeptAdapter.VH>() {
 
-        class VH(val tv: TextView) : RecyclerView.ViewHolder(tv)
+        class VH(val b: ItemLookupRowBinding) : RecyclerView.ViewHolder(b.root)
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
-            val tv = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_lookup_row, parent, false) as TextView
-            return VH(tv)
-        }
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH =
+            VH(ItemLookupRowBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
         override fun getItemCount() = rows.size
 
         override fun onBindViewHolder(holder: VH, position: Int) {
             val dept = rows[position]
-            holder.tv.text = dept.name + if (!dept.code.isNullOrBlank()) "  ·  ${dept.code}" else ""
-            holder.tv.setOnClickListener { onTap(dept) }
+            holder.b.tvTitle.text = dept.name
+            holder.b.tvSubtitle.text = dept.code?.takeIf { it.isNotBlank() } ?: "—"
+            holder.b.root.setOnClickListener { onTap(dept) }
         }
     }
 }

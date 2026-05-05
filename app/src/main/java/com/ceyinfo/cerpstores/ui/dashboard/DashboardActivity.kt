@@ -21,6 +21,7 @@ import com.ceyinfo.cerpstores.ui.common.BottomNav
 import com.ceyinfo.cerpstores.ui.grn.GrnListActivity
 import com.ceyinfo.cerpstores.ui.issue.IssueListActivity
 import com.ceyinfo.cerpstores.ui.login.LoginActivity
+import com.ceyinfo.cerpstores.ui.transfer.TransferListActivity
 import com.ceyinfo.cerpstores.ui.verification.VerificationListActivity
 import com.ceyinfo.cerpstores.util.SessionManager
 import com.google.android.material.card.MaterialCardView
@@ -190,6 +191,7 @@ class DashboardActivity : AppCompatActivity() {
         when (spec.entityCode) {
             "grn" -> startActivity(Intent(this, GrnListActivity::class.java))
             "store_issue" -> startActivity(Intent(this, IssueListActivity::class.java))
+            "stock_transfer" -> startActivity(Intent(this, TransferListActivity::class.java))
             "verification" -> startActivity(Intent(this, VerificationListActivity::class.java))
             else -> Toast.makeText(
                 this,

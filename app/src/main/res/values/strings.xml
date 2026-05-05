@@ -291,6 +291,7 @@
     <string name="transfer_list_subtitle">All transfers across your stores</string>
     <string name="transfer_filter_all">All</string>
     <string name="transfer_status_draft">Draft</string>
+    <string name="transfer_status_pending">Pending Approval</string>
     <string name="transfer_status_in_transit">In Transit</string>
     <string name="transfer_status_received">Received</string>
     <string name="transfer_status_cancelled">Cancelled</string>
@@ -307,11 +308,15 @@
     <string name="transfer_detail_items">Line Items</string>
     <string name="transfer_detail_no_items">No items recorded.</string>
     <string name="transfer_detail_remarks">Remarks</string>
-    <string name="transfer_action_dispatch">Dispatch</string>
+    <string name="transfer_action_submit">Submit for Approval</string>
+    <string name="transfer_action_approve">Approve &amp; Dispatch</string>
+    <string name="transfer_action_recall">Recall to Draft</string>
     <string name="transfer_action_receive">Mark Received</string>
     <string name="transfer_action_cancel">Cancel Transfer</string>
 
-    <string name="transfer_transition_dispatched">Transfer dispatched successfully.</string>
+    <string name="transfer_transition_submitted">Transfer submitted for approval.</string>
+    <string name="transfer_transition_approved">Transfer approved &amp; dispatched.</string>
+    <string name="transfer_transition_recalled">Transfer recalled to draft.</string>
     <string name="transfer_transition_received">Transfer received successfully.</string>
     <string name="transfer_transition_cancelled">Transfer cancelled.</string>
     <string name="transfer_transition_updated">Transfer updated successfully.</string>

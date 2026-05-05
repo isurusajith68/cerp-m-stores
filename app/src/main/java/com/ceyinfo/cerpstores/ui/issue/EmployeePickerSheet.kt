@@ -6,13 +6,13 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ceyinfo.cerpstores.R
 import com.ceyinfo.cerpstores.data.model.Employee
 import com.ceyinfo.cerpstores.data.remote.ApiClient
+import com.ceyinfo.cerpstores.databinding.ItemLookupRowBinding
 import com.ceyinfo.cerpstores.databinding.SheetEmployeePickerBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.coroutines.Job
@@ -86,13 +86,10 @@ object EmployeePickerSheet {
         private val onTap: (Employee) -> Unit,
     ) : RecyclerView.Adapter<EmpAdapter.VH>() {
 
-        class VH(val tv: TextView) : RecyclerView.ViewHolder(tv)
+        class VH(val b: ItemLookupRowBinding) : RecyclerView.ViewHolder(b.root)
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
-            val tv = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_lookup_row, parent, false) as TextView
-            return VH(tv)
-        }
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH =
+            VH(ItemLookupRowBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
         override fun getItemCount() = rows.size
 
@@ -102,8 +99,9 @@ object EmployeePickerSheet {
                 emp.employeeNumber?.takeIf { it.isNotBlank() },
                 emp.departmentName?.takeIf { it.isNotBlank() },
             ).joinToString("  ·  ")
-            holder.tv.text = if (meta.isNotBlank()) "${emp.name}  ·  $meta" else emp.name
-            holder.tv.setOnClickListener { onTap(emp) }
+            holder.b.tvTitle.text = emp.name
+            holder.b.tvSubtitle.text = meta.ifBlank { "—" }
+            holder.b.root.setOnClickListener { onTap(emp) }
         }
     }
 }

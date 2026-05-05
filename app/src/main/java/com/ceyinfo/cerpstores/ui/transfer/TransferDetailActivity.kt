@@ -25,13 +25,14 @@ import kotlinx.coroutines.launch
  * Stock Transfer detail — read-only header + line items + optional
  * transition buttons based on current status and caller's ACL grants.
  *
- * Transition map:
- *   DRAFT      → dispatch  (action: "dispatch",  canPerformAction("stock_transfer","dispatch"))
- *   DRAFT      → cancel    (action: "cancel",    canPerformAction("stock_transfer","cancel"))
- *   IN_TRANSIT → receive   (action: "receive",   canPerformAction("stock_transfer","receive"))
- *
- * Dispatching (DRAFT→IN_TRANSIT) deducts stock from the source store.
- * Receiving (IN_TRANSIT→RECEIVED) adds stock to the destination store.
+ * Transition map (matches the seeded perm_state_transitions for stock_transfer):
+ *   DRAFT      → submit  (action: "submit")  → PENDING
+ *   DRAFT      → cancel  (action: "cancel")  → CANCELLED
+ *   PENDING    → approve (action: "approve") → IN_TRANSIT (deducts source stock)
+ *   PENDING    → recall  (action: "recall")  → DRAFT
+ *   PENDING    → cancel  (action: "cancel")  → CANCELLED
+ *   IN_TRANSIT → receive (action: "receive") → RECEIVED  (adds destination stock)
+ *   IN_TRANSIT → cancel  (action: "cancel")  → CANCELLED
  */
 class TransferDetailActivity : AppCompatActivity() {
 
@@ -164,12 +165,41 @@ class TransferDetailActivity : AppCompatActivity() {
 
         when (transfer.status.uppercase()) {
             "DRAFT" -> {
-                if (session.canPerformAction("stock_transfer", "dispatch")) {
+                if (session.canPerformAction("stock_transfer", "submit")) {
                     addActionButton(
-                        label = getString(R.string.transfer_action_dispatch),
+                        label = getString(R.string.transfer_action_submit),
                         colorRes = R.color.primary,
                         lp = lp,
-                        action = "dispatch",
+                        action = "submit",
+                        transfer = transfer,
+                    )
+                }
+                if (session.canPerformAction("stock_transfer", "cancel")) {
+                    addActionButton(
+                        label = getString(R.string.transfer_action_cancel),
+                        colorRes = R.color.error,
+                        lp = lp,
+                        action = "cancel",
+                        transfer = transfer,
+                    )
+                }
+            }
+            "PENDING" -> {
+                if (session.canPerformAction("stock_transfer", "approve")) {
+                    addActionButton(
+                        label = getString(R.string.transfer_action_approve),
+                        colorRes = R.color.primary,
+                        lp = lp,
+                        action = "approve",
+                        transfer = transfer,
+                    )
+                }
+                if (session.canPerformAction("stock_transfer", "recall")) {
+                    addActionButton(
+                        label = getString(R.string.transfer_action_recall),
+                        colorRes = R.color.text_secondary,
+                        lp = lp,
+                        action = "recall",
                         transfer = transfer,
                     )
                 }
@@ -190,6 +220,15 @@ class TransferDetailActivity : AppCompatActivity() {
                         colorRes = R.color.primary,
                         lp = lp,
                         action = "receive",
+                        transfer = transfer,
+                    )
+                }
+                if (session.canPerformAction("stock_transfer", "cancel")) {
+                    addActionButton(
+                        label = getString(R.string.transfer_action_cancel),
+                        colorRes = R.color.error,
+                        lp = lp,
+                        action = "cancel",
                         transfer = transfer,
                     )
                 }
@@ -224,10 +263,12 @@ class TransferDetailActivity : AppCompatActivity() {
                     .transitionTransfer(transfer.id, TransitionRequest(action))
                 if (resp.isSuccessful && resp.body()?.success == true) {
                     val msg = when (action) {
-                        "dispatch" -> getString(R.string.transfer_transition_dispatched)
-                        "receive"  -> getString(R.string.transfer_transition_received)
-                        "cancel"   -> getString(R.string.transfer_transition_cancelled)
-                        else       -> getString(R.string.transfer_transition_updated)
+                        "submit"  -> getString(R.string.transfer_transition_submitted)
+                        "approve" -> getString(R.string.transfer_transition_approved)
+                        "recall"  -> getString(R.string.transfer_transition_recalled)
+                        "receive" -> getString(R.string.transfer_transition_received)
+                        "cancel"  -> getString(R.string.transfer_transition_cancelled)
+                        else      -> getString(R.string.transfer_transition_updated)
                     }
                     Toast.makeText(this@TransferDetailActivity, msg, Toast.LENGTH_SHORT).show()
                     load()

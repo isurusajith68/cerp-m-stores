@@ -107,6 +107,7 @@ class TransferListActivity : AppCompatActivity() {
         val filters = listOf(
             Filter(null,         getString(R.string.transfer_filter_all)),
             Filter("DRAFT",      getString(R.string.transfer_status_draft)),
+            Filter("PENDING",    getString(R.string.transfer_status_pending)),
             Filter("IN_TRANSIT", getString(R.string.transfer_status_in_transit)),
             Filter("RECEIVED",   getString(R.string.transfer_status_received)),
             Filter("CANCELLED",  getString(R.string.transfer_status_cancelled)),
