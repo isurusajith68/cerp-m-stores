@@ -160,6 +160,12 @@
     <string name="cancel">Cancel</string>
     <string name="back">Back</string>
 
+    <!-- History hub -->
+    <string name="history_hub_title">History</string>
+    <string name="history_hub_subtitle">All store documents and movements</string>
+    <string name="history_hub_all_movements">All Stock Movements</string>
+    <string name="history_hub_all_movements_desc">GRN, issue, transfer, verification ledger trail</string>
+
     <!-- Stock verification -->
     <string name="module_verification">Verify Stock</string>
     <string name="module_verification_desc">Walk &amp; record physical stock</string>
@@ -204,7 +210,7 @@
     <string name="vline_freetext_back">Back to catalogue</string>
     <string name="vline_field_description">Description *</string>
     <string name="vline_field_unit">Unit</string>
-    <string name="vline_field_unit_freetext">Unit (e.g. kg, pcs)</string>
+    <string name="vline_field_unit_freetext">Unit * (e.g. kg, pcs)</string>
     <string name="vline_field_qty">Quantity *</string>
     <string name="vline_field_serial">Item Serial No.</string>
     <string name="vline_field_batch">Batch Number</string>
@@ -221,6 +227,7 @@
     <string name="vline_photo_max_reached">Up to 5 photos per line. Remove one to add another.</string>
     <string name="vline_save">Add to Verification</string>
     <string name="vline_validation_description">Description is required.</string>
+    <string name="vline_validation_unit">Unit is required to add this item to materials.</string>
     <string name="vline_validation_qty">Quantity must be greater than 0.</string>
 
     <!-- Goods Issue list / detail -->
@@ -359,6 +366,7 @@
     <string name="inventory_filter_low_stock">Low stock</string>
     <string name="inventory_filter_store_all">All stores</string>
     <string name="inventory_filter_store_picker_title">Filter by store</string>
+    <string name="inventory_filter_clear">Clear filters</string>
     <string name="inventory_low_stock_badge">LOW</string>
     <string name="inventory_qty_available">Available</string>
     <string name="inventory_qty_on_hand">On hand: %1$s</string>

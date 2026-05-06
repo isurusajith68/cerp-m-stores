@@ -25,10 +25,8 @@ import com.ceyinfo.cerpstores.ui.settings.SettingsActivity
  * - The center FAB always opens the New-Transaction picker, regardless of
  *   which screen is active.
  *
- * History today routes to GrnListActivity (the only entity with a list
- * screen). Once Issues / Transfers / Returns / Adjustments have list
- * activities, swap History's target for a tabbed wrapper that hosts all
- * five. Inventory routes to InventoryActivity (read-only stock view).
+ * History routes to the all-stock-movements audit trail. Inventory routes to
+ * InventoryActivity (read-only stock view).
  */
 object BottomNav {
 

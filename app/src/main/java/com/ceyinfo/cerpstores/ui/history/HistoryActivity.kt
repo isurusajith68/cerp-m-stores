@@ -65,6 +65,7 @@ class HistoryActivity : AppCompatActivity() {
         binding = ActivityHistoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.btnBack.setOnClickListener { finish() }
         BottomNav.bind(binding.bottomNav.root, this, BottomNav.Tab.HISTORY)
 
         val layoutManager = LinearLayoutManager(this)
@@ -266,7 +267,14 @@ class HistoryActivity : AppCompatActivity() {
 
             // Quantity pill
             val unitSym = tx.unitSymbol?.takeIf { it.isNotBlank() }?.let { " $it" } ?: ""
-            b.tvQuantity.text = GrnStatusStyle.formatQuantity(tx.quantity) + unitSym
+            val isInflow = isInflow(tx)
+            b.tvQuantity.text =
+                (if (isInflow) "+" else "-") +
+                    GrnStatusStyle.formatQuantity(kotlin.math.abs(tx.quantity)) +
+                    unitSym
+            b.tvQuantity.setTextColor(
+                android.graphics.Color.parseColor(if (isInflow) "#0F766E" else "#BE123C")
+            )
 
             b.tvCreatedBy.text = tx.createdByName?.takeIf { it.isNotBlank() } ?: ""
         }
@@ -281,7 +289,21 @@ class HistoryActivity : AppCompatActivity() {
             "RETURN_IN"     -> Triple("RETURN IN",     "#FCE7F3", "#BE185D")
             "ADJUSTMENT_IN" -> Triple("ADJ IN",        "#F0FDF4", "#15803D")
             "ADJUSTMENT_OUT"-> Triple("ADJ OUT",       "#FFF7ED", "#C2410C")
+            "VERIFICATION"  -> Triple("VERIFY",        "#F1F5F9", "#475569")
             else            -> Triple(type,            "#F1F5F9", "#475569")
+        }
+
+        private fun isInflow(tx: StockTransaction): Boolean {
+            if (tx.transactionType == "VERIFICATION") {
+                return tx.toStoreId != null && tx.fromStoreId == null
+            }
+            return when (tx.transactionType) {
+                "GRN_IN",
+                "TRANSFER_IN",
+                "RETURN_IN",
+                "ADJUSTMENT_IN" -> true
+                else -> false
+            }
         }
 
         private fun formatDate(raw: String?): String {

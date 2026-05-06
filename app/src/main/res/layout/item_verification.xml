@@ -7,9 +7,9 @@
     android:clickable="true"
     android:focusable="true"
     android:foreground="?attr/selectableItemBackground"
-    app:cardCornerRadius="14dp"
+    app:cardCornerRadius="12dp"
     app:cardElevation="0dp"
-    app:strokeColor="#EFE6D8"
+    app:strokeColor="@color/divider"
     app:strokeWidth="1dp">
 
     <LinearLayout

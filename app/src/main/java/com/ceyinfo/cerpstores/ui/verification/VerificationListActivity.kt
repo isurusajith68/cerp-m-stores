@@ -84,7 +84,7 @@ class VerificationListActivity : AppCompatActivity() {
             }
         }
 
-        BottomNav.bind(binding.bottomNav.root, this, BottomNav.Tab.HISTORY)
+        BottomNav.bind(binding.bottomNav.root, this, BottomNav.Tab.HOME)
 
         binding.rvVerifications.layoutManager = LinearLayoutManager(this)
         binding.rvVerifications.adapter = adapter

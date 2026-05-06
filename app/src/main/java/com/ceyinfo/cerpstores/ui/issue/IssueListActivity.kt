@@ -76,7 +76,7 @@ class IssueListActivity : AppCompatActivity() {
             }
         }
 
-        BottomNav.bind(binding.bottomNav.root, this, BottomNav.Tab.HISTORY)
+        BottomNav.bind(binding.bottomNav.root, this, BottomNav.Tab.HOME)
 
         binding.rvIssues.layoutManager = LinearLayoutManager(this)
         binding.rvIssues.adapter = adapter

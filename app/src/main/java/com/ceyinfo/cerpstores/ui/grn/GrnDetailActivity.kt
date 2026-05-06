@@ -73,7 +73,7 @@ class GrnDetailActivity : AppCompatActivity() {
 
         session = SessionManager(this)
         binding.btnBack.setOnClickListener { finish() }
-        BottomNav.bind(binding.bottomNav.root, this, BottomNav.Tab.HISTORY)
+        BottomNav.bind(binding.bottomNav.root, this, BottomNav.Tab.HOME)
 
         binding.swipeRefresh.setColorSchemeResources(R.color.primary)
         binding.swipeRefresh.setOnRefreshListener { load() }

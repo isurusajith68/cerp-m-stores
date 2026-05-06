@@ -77,7 +77,7 @@ class TransferListActivity : AppCompatActivity() {
             }
         }
 
-        BottomNav.bind(binding.bottomNav.root, this, BottomNav.Tab.HISTORY)
+        BottomNav.bind(binding.bottomNav.root, this, BottomNav.Tab.HOME)
 
         binding.rvTransfers.layoutManager = LinearLayoutManager(this)
         binding.rvTransfers.adapter = adapter

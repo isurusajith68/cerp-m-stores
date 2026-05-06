@@ -319,7 +319,11 @@ object AddVerificationItemSheet {
                     return@setOnClickListener
                 }
                 materialId = null
-                unitSymbol = binding.etUnitSymbol.text?.toString()?.trim()?.ifEmpty { null }
+                unitSymbol = binding.etUnitSymbol.text?.toString()?.trim().orEmpty()
+                if (unitSymbol.isEmpty()) {
+                    Toast.makeText(activity, R.string.vline_validation_unit, Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
             } else {
                 val mat = pickedMaterial
                 if (mat == null) {

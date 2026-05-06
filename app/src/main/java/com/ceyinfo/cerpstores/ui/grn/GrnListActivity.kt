@@ -39,10 +39,8 @@ import kotlinx.coroutines.launch
  *                            the desired feel)
  *   - Empty               → empty card, list hidden, no spinner
  *
- * Wired to the History tab in the bottom nav. The GrnList is the only
- * History destination today; once Issues / Transfers / Returns / Adjustments
- * have list activities, History will likely become a tabbed wrapper
- * around them and this activity moves under that.
+ * Wired to the Home tab in the bottom nav because GRNs are opened from the
+ * dashboard shortcut set. The History tab is reserved for stock movements.
  */
 class GrnListActivity : AppCompatActivity() {
 
@@ -98,7 +96,7 @@ class GrnListActivity : AppCompatActivity() {
             }
         }
 
-        BottomNav.bind(binding.bottomNav.root, this, BottomNav.Tab.HISTORY)
+        BottomNav.bind(binding.bottomNav.root, this, BottomNav.Tab.HOME)
 
         binding.rvGrns.layoutManager = LinearLayoutManager(this)
         binding.rvGrns.adapter = adapter

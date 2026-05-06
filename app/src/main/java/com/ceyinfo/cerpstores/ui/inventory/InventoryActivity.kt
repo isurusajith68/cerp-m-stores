@@ -60,6 +60,7 @@ class InventoryActivity : AppCompatActivity() {
         binding = ActivityInventoryListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.btnBack.setOnClickListener { finish() }
         BottomNav.bind(binding.bottomNav.root, this, BottomNav.Tab.INVENTORY)
 
         val layoutManager = LinearLayoutManager(this)
@@ -137,15 +138,6 @@ class InventoryActivity : AppCompatActivity() {
                     reload()
                 }
             }
-            if (storeFilterId != null) {
-                chip.setOnLongClickListener {
-                    storeFilterId = null
-                    storeFilterName = null
-                    buildFilterChips()
-                    reload()
-                    true
-                }
-            }
             val dp = resources.displayMetrics.density
             val lp = ViewGroup.MarginLayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -153,6 +145,25 @@ class InventoryActivity : AppCompatActivity() {
             ).apply { marginEnd = (8 * dp).toInt() }
             binding.filterContainer.addView(chip, lp)
         }
+
+        if (hasActiveFilters()) {
+            addStatusChip(R.string.inventory_filter_clear, isActive = false) {
+                clearFilters()
+            }
+        }
+    }
+
+    private fun hasActiveFilters(): Boolean =
+        onlyLowStock || storeFilterId != null || searchQuery.isNotBlank() || binding.etSearch.text?.isNotBlank() == true
+
+    private fun clearFilters() {
+        onlyLowStock = false
+        storeFilterId = null
+        storeFilterName = null
+        searchQuery = ""
+        binding.etSearch.text?.clear()
+        buildFilterChips()
+        reload()
     }
 
     private fun addStatusChip(labelRes: Int, isActive: Boolean, onTap: () -> Unit) {
