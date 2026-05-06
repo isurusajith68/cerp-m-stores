@@ -12,7 +12,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import com.ceyinfo.cerpstores.R
 import com.ceyinfo.cerpstores.ui.dashboard.DashboardActivity
-import com.ceyinfo.cerpstores.ui.grn.GrnListActivity
+import com.ceyinfo.cerpstores.ui.history.HistoryActivity
 import com.ceyinfo.cerpstores.ui.inventory.InventoryActivity
 import com.ceyinfo.cerpstores.ui.settings.SettingsActivity
 
@@ -64,7 +64,7 @@ object BottomNav {
             Item(Tab.INVENTORY, R.id.pill_inventory, R.id.icon_inventory, R.id.label_inventory,
                 R.id.nav_inventory, InventoryActivity::class.java),
             Item(Tab.HISTORY, R.id.pill_history, R.id.icon_history, R.id.label_history,
-                R.id.nav_history, GrnListActivity::class.java),
+                R.id.nav_history, HistoryActivity::class.java),
             Item(Tab.SETTINGS, R.id.pill_settings, R.id.icon_settings, R.id.label_settings,
                 R.id.nav_settings, SettingsActivity::class.java),
         )

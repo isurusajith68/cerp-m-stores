@@ -18,6 +18,7 @@ import com.ceyinfo.cerpstores.data.model.MyRoleData
 import com.ceyinfo.cerpstores.data.model.MyStore
 import com.ceyinfo.cerpstores.data.model.CreateVerificationRequest
 import com.ceyinfo.cerpstores.data.model.StoreInfo
+import com.ceyinfo.cerpstores.data.model.StockTransaction
 import com.ceyinfo.cerpstores.data.model.Supplier
 import com.ceyinfo.cerpstores.data.model.Transfer
 import com.ceyinfo.cerpstores.data.model.TransitionRequest
@@ -84,6 +85,16 @@ interface ApiService {
         @Path("id") id: String,
         @Body request: TransitionRequest,
     ): Response<ApiResponse<Grn>>
+
+    // ── Store Mobile: Transactions (History) ─────────────────────────
+    @GET("store-mobile/transactions")
+    suspend fun getTransactions(
+        @Query("store_id") storeId: String? = null,
+        @Query("txn_type") txnType: String? = null,
+        @Query("search") search: String? = null,
+        @Query("page") page: Int = 1,
+        @Query("limit") limit: Int = 30
+    ): Response<ApiResponse<List<StockTransaction>>>
 
     // ── Store Mobile: Inventory ───────────────────────────────────────
     @GET("store-mobile/inventory")

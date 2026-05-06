@@ -368,4 +368,30 @@
     <string name="inventory_batch_label">Batch: %1$s</string>
     <string name="inventory_empty">No stock to show. Try clearing filters.</string>
     <string name="inventory_empty_search">No matches for that search.</string>
+    <!-- Inventory table column headers -->
+    <string name="inventory_col_store">STORE</string>
+    <string name="inventory_col_material">MATERIAL</string>
+    <string name="inventory_col_sku">SKU</string>
+    <string name="inventory_col_batch">BATCH</string>
+    <string name="inventory_col_available">AVAILABLE</string>
+    <string name="inventory_col_status">STATUS</string>
+    <string name="inventory_col_last_txn">LAST TXN</string>
+    <!-- Inventory status badges -->
+    <string name="inventory_status_ok">OK</string>
+    <string name="inventory_status_low_stock">LOW STOCK</string>
+    <!-- Subtitle shown in header -->
+    <string name="inventory_subtitle_all">Current stock position across all stores.</string>
+
+    <!-- History / Transaction Log tab -->
+    <string name="history_title">Transaction History</string>
+    <string name="history_subtitle">All stock movements across your stores</string>
+    <string name="history_search_hint">Search material, SKU, or batch</string>
+    <string name="history_empty">No transactions to show. Try clearing filters.</string>
+    <string name="history_filter_all">All</string>
+    <string name="history_filter_grn_in">GRN In</string>
+    <string name="history_filter_issue_out">Issue Out</string>
+    <string name="history_filter_transfer_in">Transfer In</string>
+    <string name="history_filter_transfer_out">Transfer Out</string>
+    <string name="history_filter_return">Return</string>
+    <string name="history_filter_adjustment">Adjustment</string>
 </resources>

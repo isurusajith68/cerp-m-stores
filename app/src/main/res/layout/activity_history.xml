@@ -5,7 +5,7 @@
     android:background="@color/surface"
     android:orientation="vertical">
 
-    <!-- Header bar -->
+    <!-- Header -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -30,7 +30,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/inventory_title"
+                android:text="@string/history_title"
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -39,13 +39,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                android:text="@string/inventory_subtitle_all"
+                android:text="@string/history_subtitle"
                 android:textColor="#FFE4B8"
                 android:textSize="12sp" />
         </LinearLayout>
     </LinearLayout>
 
-    <!-- Search + filter bar -->
+    <!-- Search + filter chips -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -74,7 +74,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_weight="1"
                 android:background="@null"
-                android:hint="@string/inventory_search_hint"
+                android:hint="@string/history_search_hint"
                 android:imeOptions="actionSearch"
                 android:inputType="text"
                 android:singleLine="true"
@@ -95,7 +95,6 @@
                 android:visibility="gone" />
         </LinearLayout>
 
-        <!-- Filter chips: All / Low stock / Store -->
         <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -118,7 +117,7 @@
         android:layout_height="1dp"
         android:background="@color/divider" />
 
-    <!-- Main content -->
+    <!-- Content -->
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -130,7 +129,7 @@
             android:layout_height="match_parent">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_inventory"
+                android:id="@+id/rv_transactions"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:clipToPadding="false"
@@ -161,7 +160,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="@string/inventory_empty"
+                android:text="@string/history_empty"
                 android:textColor="@color/text_secondary"
                 android:textSize="14sp" />
         </LinearLayout>

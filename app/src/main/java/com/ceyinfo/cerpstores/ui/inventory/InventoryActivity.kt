@@ -7,7 +7,6 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
@@ -26,37 +25,21 @@ import com.ceyinfo.cerpstores.ui.grn.GrnStatusStyle
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Locale
+import java.util.TimeZone
 
-/**
- * Inventory tab — read-only stock list across the user's reachable stores.
- *
- * Backed by `GET /store-mobile/inventory` which returns one row per
- * (store, material, batch). Filters: status-style chips for All / Low stock,
- * plus an optional "Store" chip (only shown when the user has 2+ stores).
- *
- * Pagination, P2R, and the empty/loading state-machine all match the GRN
- * list activity verbatim — see GrnListActivity for the comments on each
- * branch. Differences worth noting:
- *   - No "+" header button (read-only view).
- *   - Search box, debounced by 300ms (GRN list relies on filter chips alone).
- *   - Empty-state copy switches between "no matches" and "no stock yet"
- *     so users with an active search aren't told their store is empty.
- */
 class InventoryActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityInventoryListBinding
 
-    /** null = All; true = only low stock. The chip strip toggles between these. */
     private var onlyLowStock: Boolean = false
-
-    /** null = all stores; otherwise filter to this store_id. */
     private var storeFilterId: String? = null
     private var storeFilterName: String? = null
 
     private var searchQuery: String = ""
     private var searchDebounceJob: Job? = null
 
-    /** Cached list of reachable stores; controls whether the Store chip shows. */
     private var reachableStores: List<MyStore> = emptyList()
 
     private val items = mutableListOf<InventoryRow>()
@@ -79,23 +62,24 @@ class InventoryActivity : AppCompatActivity() {
 
         BottomNav.bind(binding.bottomNav.root, this, BottomNav.Tab.INVENTORY)
 
-        binding.rvInventory.layoutManager = LinearLayoutManager(this)
+        val layoutManager = LinearLayoutManager(this)
+        binding.rvInventory.layoutManager = layoutManager
         binding.rvInventory.adapter = adapter
 
         binding.swipeRefresh.setColorSchemeResources(R.color.primary)
         binding.swipeRefresh.setOnRefreshListener { reload() }
 
+        // Load next page when within 5 items of the end of the list
         binding.rvInventory.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(rv: RecyclerView, dx: Int, dy: Int) {
-                if (dy <= 0 || isLoading) return
-                val lm = rv.layoutManager as? LinearLayoutManager ?: return
-                if (lm.findLastVisibleItemPosition() >= lm.itemCount - 3 && items.size < totalCount) {
+                val lm = rv.layoutManager as LinearLayoutManager
+                val lastVisible = lm.findLastVisibleItemPosition()
+                if (lastVisible >= items.size - 5 && !isLoading && items.size < totalCount) {
                     loadPage(page + 1, append = true)
                 }
             }
         })
 
-        // Search — 300ms debounce so we don't fire a request per keystroke.
         binding.etSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
@@ -115,12 +99,9 @@ class InventoryActivity : AppCompatActivity() {
         })
         binding.btnClearSearch.setOnClickListener {
             binding.etSearch.text?.clear()
-            // afterTextChanged handles the reload via the debouncer.
         }
 
         buildFilterChips()
-        // Fetch reachable stores once so the Store chip renders accurately.
-        // We don't block on this — the inventory list loads in parallel.
         loadReachableStores()
         reload()
     }
@@ -143,9 +124,6 @@ class InventoryActivity : AppCompatActivity() {
             reload()
         }
 
-        // Store filter — only shown when there's actually a choice to make.
-        // For single-store users a store chip would be confusing; for users
-        // with no reachable stores the API would just return [] anyway.
         if (reachableStores.size >= 2) {
             val label = storeFilterName ?: getString(R.string.inventory_filter_store_all)
             val chip = makeChip(label, isActive = storeFilterId != null) {
@@ -159,8 +137,6 @@ class InventoryActivity : AppCompatActivity() {
                     reload()
                 }
             }
-            // Add a × on the right when a store is selected so users can
-            // clear back to "all stores" without hunting for the All chip.
             if (storeFilterId != null) {
                 chip.setOnLongClickListener {
                     storeFilterId = null
@@ -189,9 +165,9 @@ class InventoryActivity : AppCompatActivity() {
         binding.filterContainer.addView(chip, lp)
     }
 
-    private fun makeChip(label: String, isActive: Boolean, onTap: () -> Unit): TextView {
+    private fun makeChip(label: String, isActive: Boolean, onTap: () -> Unit): android.widget.TextView {
         val dp = resources.displayMetrics.density
-        val chip = TextView(this).apply {
+        val chip = android.widget.TextView(this).apply {
             text = label
             textSize = 12f
             setPadding((14 * dp).toInt(), (7 * dp).toInt(), (14 * dp).toInt(), (7 * dp).toInt())
@@ -207,7 +183,7 @@ class InventoryActivity : AppCompatActivity() {
         return chip
     }
 
-    private fun paintChip(chip: TextView, isActive: Boolean) {
+    private fun paintChip(chip: android.widget.TextView, isActive: Boolean) {
         val bg = chip.background as? GradientDrawable ?: return
         if (isActive) {
             bg.setColor(ContextCompat.getColor(this, R.color.primary))
@@ -233,10 +209,7 @@ class InventoryActivity : AppCompatActivity() {
                     reachableStores = resp.body()?.data.orEmpty()
                     buildFilterChips()
                 }
-            } catch (_: Exception) {
-                // Soft-fail — the inventory list itself doesn't depend on
-                // this; the store chip just won't show.
-            }
+            } catch (_: Exception) { /* soft-fail */ }
         }
     }
 
@@ -304,6 +277,11 @@ class InventoryActivity : AppCompatActivity() {
         private val rows: List<InventoryRow>,
     ) : RecyclerView.Adapter<InventoryAdapter.VH>() {
 
+        private val isoFmt = SimpleDateFormat("yyyy-MM-dd", Locale.US).apply {
+            timeZone = TimeZone.getTimeZone("UTC")
+        }
+        private val displayFmt = SimpleDateFormat("d MMM yyyy", Locale.US)
+
         class VH(val b: ItemInventoryBinding) : RecyclerView.ViewHolder(b.root)
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH =
@@ -315,61 +293,46 @@ class InventoryActivity : AppCompatActivity() {
             val row = rows[position]
             val b = holder.b
             val ctx = b.root.context
-            val sep = ctx.getString(R.string.inventory_meta_separator)
             val unitSym = row.unitSymbol?.takeIf { it.isNotBlank() }?.let { " $it" } ?: ""
 
-            // Headline name + low-stock badge.
-            b.tvName.text = row.materialName?.takeIf { it.isNotBlank() } ?: "—"
-            b.tvLowBadge.visibility = if (row.isLowStock) View.VISIBLE else View.GONE
+            b.tvMaterial.text = row.materialName?.takeIf { it.isNotBlank() } ?: "—"
 
-            // Meta line: SKU · Batch (if any) · Min level (if set).
-            val metaParts = mutableListOf<String>()
-            row.materialSku?.takeIf { it.isNotBlank() }?.let { metaParts.add(it) }
-            row.batchNumber?.takeIf { it.isNotBlank() }?.let {
-                metaParts.add(ctx.getString(R.string.inventory_batch_label, it))
+            b.tvStore.text = row.storeName?.takeIf { it.isNotBlank() } ?: "—"
+
+            val sku = row.materialSku?.takeIf { it.isNotBlank() }
+            if (sku != null) {
+                b.tvSku.visibility = View.VISIBLE
+                b.tvSku.text = sku.uppercase()
+            } else {
+                b.tvSku.visibility = View.GONE
             }
-            row.minStockLevel?.let {
-                metaParts.add(ctx.getString(R.string.inventory_qty_min, GrnStatusStyle.formatQuantity(it)))
-            }
-            b.tvMeta.text = metaParts.joinToString(sep).ifEmpty { "—" }
 
-            // Store · BU. Falls back gracefully when only one is present.
-            b.tvStore.text = listOfNotNull(
-                row.storeName?.takeIf { it.isNotBlank() },
-                row.businessUnitName?.takeIf { it.isNotBlank() },
-            ).joinToString(sep).ifEmpty { "—" }
+            val batch = row.batchNumber?.takeIf { it.isNotBlank() }
+            b.tvBatch.text = if (batch != null) "Batch: $batch" else ""
 
-            // Quantity block.
             b.tvAvailable.text = GrnStatusStyle.formatQuantity(row.availableQuantity) + unitSym
 
-            // Tint the headline number red when low — a duplicate signal of
-            // the LOW badge but it's the number the user will actually scan.
-            val availColor = if (row.isLowStock)
-                ContextCompat.getColor(ctx, R.color.error)
-            else
-                ContextCompat.getColor(ctx, R.color.on_surface)
-            b.tvAvailable.setTextColor(availColor)
-
-            // Show "On hand: X" only when it differs from available — no
-            // sense duplicating the same number twice.
-            if (row.quantityOnHand != row.availableQuantity) {
-                b.tvOnHand.visibility = View.VISIBLE
-                b.tvOnHand.text = ctx.getString(
-                    R.string.inventory_qty_on_hand,
-                    GrnStatusStyle.formatQuantity(row.quantityOnHand) + unitSym,
-                )
+            if (row.isLowStock) {
+                b.tvStatus.text = ctx.getString(R.string.inventory_status_low_stock)
+                b.tvStatus.background = ContextCompat.getDrawable(ctx, R.drawable.bg_status_low)
+                b.tvStatus.setTextColor(android.graphics.Color.parseColor("#D97706"))
             } else {
-                b.tvOnHand.visibility = View.GONE
+                b.tvStatus.text = ctx.getString(R.string.inventory_status_ok)
+                b.tvStatus.background = ContextCompat.getDrawable(ctx, R.drawable.bg_status_ok)
+                b.tvStatus.setTextColor(android.graphics.Color.parseColor("#16A34A"))
             }
 
-            if (row.reservedQuantity > 0.0) {
-                b.tvReserved.visibility = View.VISIBLE
-                b.tvReserved.text = ctx.getString(
-                    R.string.inventory_qty_reserved,
-                    GrnStatusStyle.formatQuantity(row.reservedQuantity) + unitSym,
-                )
-            } else {
-                b.tvReserved.visibility = View.GONE
+            b.tvLastTxn.text = formatDate(row.lastTransactionDate)
+        }
+
+        private fun formatDate(raw: String?): String {
+            if (raw.isNullOrBlank()) return "—"
+            return try {
+                val datePart = raw.substringBefore('T').take(10)
+                val date = isoFmt.parse(datePart) ?: return "—"
+                displayFmt.format(date)
+            } catch (_: Exception) {
+                "—"
             }
         }
     }

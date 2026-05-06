@@ -8,9 +8,23 @@ data class ApiResponse<T>(
     val success: Boolean,
     val message: String? = null,
     val data: T? = null,
+    @SerializedName("total") private val _total: Int? = null,
+    @SerializedName("page") private val _page: Int? = null,
+    @SerializedName("limit") private val _limit: Int? = null,
+    val pagination: Pagination? = null,
+) {
+    // paginatedResponse() nests total/page/limit inside a "pagination" object;
+    // some older endpoints return them at the top level. Both work with these getters.
+    val total: Int? get() = _total ?: pagination?.total
+    val page: Int? get() = _page ?: pagination?.page
+    val limit: Int? get() = _limit ?: pagination?.limit
+}
+
+data class Pagination(
     val total: Int? = null,
     val page: Int? = null,
-    val limit: Int? = null
+    val limit: Int? = null,
+    @SerializedName("totalPages") val totalPages: Int? = null,
 )
 
 // ── Auth ──
@@ -187,6 +201,30 @@ data class Supplier(
     @SerializedName("supplier_id") val supplierId: String,
     @SerializedName("supplier_name") val supplierName: String,
     @SerializedName("supplier_code") val supplierCode: String? = null
+)
+
+// ── Stock Transaction (History) ──────────────────────────────────
+
+data class StockTransaction(
+    @SerializedName("stock_tx_id") val stockTxId: String,
+    @SerializedName("transaction_number") val transactionNumber: String? = null,
+    @SerializedName("transaction_type") val transactionType: String,
+    @SerializedName("reference_document") val referenceDocument: String? = null,
+    @SerializedName("reference_id") val referenceId: String? = null,
+    @SerializedName("item_id") val itemId: String? = null,
+    @SerializedName("from_store_id") val fromStoreId: String? = null,
+    @SerializedName("to_store_id") val toStoreId: String? = null,
+    val quantity: Double = 0.0,
+    @SerializedName("unit_price") val unitPrice: Double? = null,
+    @SerializedName("batch_number") val batchNumber: String? = null,
+    val remarks: String? = null,
+    @SerializedName("created_at") val createdAt: String? = null,
+    @SerializedName("material_name") val materialName: String? = null,
+    @SerializedName("material_sku") val materialSku: String? = null,
+    @SerializedName("unit_symbol") val unitSymbol: String? = null,
+    @SerializedName("from_store_name") val fromStoreName: String? = null,
+    @SerializedName("to_store_name") val toStoreName: String? = null,
+    @SerializedName("created_by_name") val createdByName: String? = null,
 )
 
 // ── GRN Create payload ───────────────────────────────────────────

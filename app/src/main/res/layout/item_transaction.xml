@@ -16,7 +16,7 @@
         android:orientation="vertical"
         android:padding="14dp">
 
-        <!-- Row 1: Material name + status badge -->
+        <!-- Row 1: Type badge + txn number + date -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -24,34 +24,51 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/tv_material"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_weight="1"
-                android:ellipsize="end"
-                android:maxLines="2"
-                android:textColor="@color/on_surface"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tv_status"
+                android:id="@+id/tv_txn_type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="10dp"
                 android:paddingVertical="4dp"
                 android:textSize="10sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_txn_number"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/text_secondary"
+                android:textSize="11sp" />
+
+            <TextView
+                android:id="@+id/tv_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#94A3B8"
+                android:textSize="11sp" />
         </LinearLayout>
 
-        <!-- Row 2: Store name -->
+        <!-- Row 2: Material name -->
         <TextView
-            android:id="@+id/tv_store"
+            android:id="@+id/tv_material"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textColor="@color/on_surface"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <!-- Row 3: Store route (from → to) or single store -->
+        <TextView
+            android:id="@+id/tv_store_route"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:drawablePadding="4dp"
             android:ellipsize="end"
             android:maxLines="1"
             android:textColor="@color/text_secondary"
@@ -64,7 +81,7 @@
             android:layout_marginBottom="10dp"
             android:background="@color/divider" />
 
-        <!-- Row 3: SKU badge + batch | available pill | last txn -->
+        <!-- Row 4: Batch · qty pill · created by -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -72,24 +89,9 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/tv_sku"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_sku_badge"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:paddingHorizontal="8dp"
-                android:paddingVertical="3dp"
-                android:textColor="#E2E8F0"
-                android:textSize="9sp"
-                android:textStyle="bold"
-                android:visibility="gone" />
-
-            <TextView
                 android:id="@+id/tv_batch"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
                 android:layout_weight="1"
                 android:ellipsize="end"
                 android:maxLines="1"
@@ -97,7 +99,7 @@
                 android:textSize="11sp" />
 
             <TextView
-                android:id="@+id/tv_available"
+                android:id="@+id/tv_quantity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
@@ -109,18 +111,13 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/tv_last_txn"
+                android:id="@+id/tv_created_by"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:textColor="#94A3B8"
                 android:textSize="11sp" />
-
-            <!-- Hidden — kept for adapter compatibility -->
-            <ImageView
-                android:id="@+id/iv_transactions"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:visibility="gone" />
         </LinearLayout>
 
     </LinearLayout>

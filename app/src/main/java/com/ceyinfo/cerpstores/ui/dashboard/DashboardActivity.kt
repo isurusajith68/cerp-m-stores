@@ -19,6 +19,7 @@ import com.ceyinfo.cerpstores.data.remote.ApiClient
 import com.ceyinfo.cerpstores.databinding.ActivityDashboardBinding
 import com.ceyinfo.cerpstores.ui.common.BottomNav
 import com.ceyinfo.cerpstores.ui.grn.GrnListActivity
+import com.ceyinfo.cerpstores.ui.inventory.InventoryActivity
 import com.ceyinfo.cerpstores.ui.issue.IssueListActivity
 import com.ceyinfo.cerpstores.ui.login.LoginActivity
 import com.ceyinfo.cerpstores.ui.transfer.TransferListActivity
@@ -212,6 +213,7 @@ class DashboardActivity : AppCompatActivity() {
             "store_issue" -> startActivity(Intent(this, IssueListActivity::class.java))
             "stock_transfer" -> startActivity(Intent(this, TransferListActivity::class.java))
             "verification" -> startActivity(Intent(this, VerificationListActivity::class.java))
+            null -> startActivity(Intent(this, InventoryActivity::class.java))
             else -> Toast.makeText(
                 this,
                 "${getString(spec.titleRes)}: ${getString(R.string.coming_soon)}",
