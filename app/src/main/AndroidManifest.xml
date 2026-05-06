@@ -54,6 +54,11 @@
             android:theme="@style/Theme.Stores.NoActionBar" />
 
         <activity
+            android:name=".ui.history.HistoryActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.Stores.NoActionBar" />
+
+        <activity
             android:name=".ui.grn.GrnDetailActivity"
             android:theme="@style/Theme.Stores.NoActionBar" />
 
