@@ -22,6 +22,8 @@ import com.ceyinfo.cerpstores.ui.grn.GrnListActivity
 import com.ceyinfo.cerpstores.ui.inventory.InventoryActivity
 import com.ceyinfo.cerpstores.ui.issue.IssueListActivity
 import com.ceyinfo.cerpstores.ui.login.LoginActivity
+import com.ceyinfo.cerpstores.ui.adjustment.AdjustmentListActivity
+import com.ceyinfo.cerpstores.ui.ret.ReturnListActivity
 import com.ceyinfo.cerpstores.ui.transfer.TransferListActivity
 import com.ceyinfo.cerpstores.ui.verification.VerificationListActivity
 import com.ceyinfo.cerpstores.updater.AppUpdater
@@ -212,7 +214,9 @@ class DashboardActivity : AppCompatActivity() {
             "grn" -> startActivity(Intent(this, GrnListActivity::class.java))
             "store_issue" -> startActivity(Intent(this, IssueListActivity::class.java))
             "stock_transfer" -> startActivity(Intent(this, TransferListActivity::class.java))
-            "verification" -> startActivity(Intent(this, VerificationListActivity::class.java))
+            "verification"   -> startActivity(Intent(this, VerificationListActivity::class.java))
+            "material_return" -> startActivity(Intent(this, ReturnListActivity::class.java))
+            "stock_adjustment" -> startActivity(Intent(this, AdjustmentListActivity::class.java))
             null -> startActivity(Intent(this, InventoryActivity::class.java))
             else -> Toast.makeText(
                 this,

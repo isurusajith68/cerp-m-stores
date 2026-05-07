@@ -130,7 +130,7 @@ class GrnListActivity : AppCompatActivity() {
         val filters = listOf(
             Filter(null,        R.string.grn_filter_all),
             Filter("DRAFT",     R.string.grn_status_draft),
-            Filter("SUBMITTED", R.string.grn_status_submitted),
+            Filter("PENDING",   R.string.grn_status_submitted),
             Filter("APPROVED",  R.string.grn_status_approved),
             Filter("CANCELLED", R.string.grn_status_cancelled),
         )

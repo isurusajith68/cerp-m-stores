@@ -11,6 +11,7 @@ import com.ceyinfo.cerpstores.databinding.ItemQuickActionBinding
 import com.ceyinfo.cerpstores.databinding.SheetNewTransactionBinding
 import com.ceyinfo.cerpstores.ui.grn.GrnCreateActivity
 import com.ceyinfo.cerpstores.ui.issue.IssueCreateActivity
+import com.ceyinfo.cerpstores.ui.ret.ReturnCreateActivity
 import com.ceyinfo.cerpstores.ui.transfer.TransferCreateActivity
 import com.ceyinfo.cerpstores.ui.verification.VerificationCreateActivity
 import com.ceyinfo.cerpstores.util.SessionManager
@@ -136,6 +137,11 @@ object NewTransactionSheet {
                 Intent(activity, VerificationCreateActivity::class.java)
                     .putExtra(VerificationCreateActivity.EXTRA_STORE_ID, store.storeId)
                     .putExtra(VerificationCreateActivity.EXTRA_STORE_NAME, store.name)
+            )
+            "material_return" -> activity.startActivity(
+                Intent(activity, ReturnCreateActivity::class.java)
+                    .putExtra(ReturnCreateActivity.EXTRA_STORE_ID, store.storeId)
+                    .putExtra(ReturnCreateActivity.EXTRA_STORE_NAME, store.name)
             )
             else -> Toast.makeText(
                 activity,

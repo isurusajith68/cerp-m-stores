@@ -390,6 +390,110 @@
     <!-- Subtitle shown in header -->
     <string name="inventory_subtitle_all">Current stock position across all stores.</string>
 
+    <!-- Material Returns list / detail -->
+    <string name="return_list_title">Material Returns</string>
+    <string name="return_list_subtitle">All returns across your stores</string>
+    <string name="return_filter_all">All</string>
+    <string name="return_status_draft">Draft</string>
+    <string name="return_status_submitted">Submitted</string>
+    <string name="return_status_approved">Approved</string>
+    <string name="return_status_cancelled">Cancelled</string>
+    <string name="return_empty">No returns yet. Tap + to record a material return.</string>
+    <string name="return_add_new">New Return</string>
+
+    <string name="return_detail_title">Material Return</string>
+    <string name="return_detail_summary">Summary</string>
+    <string name="return_detail_from_store">From Store</string>
+    <string name="return_detail_type">Return Type</string>
+    <string name="return_detail_supplier">Supplier</string>
+    <string name="return_detail_to_store">To Store</string>
+    <string name="return_detail_grn_ref">GRN Reference</string>
+    <string name="return_detail_total_qty">Total Qty</string>
+    <string name="return_detail_items">Line Items</string>
+    <string name="return_detail_no_items">No items recorded.</string>
+    <string name="return_detail_remarks">Remarks</string>
+    <string name="return_action_submit">Submit</string>
+    <string name="return_action_approve">Approve</string>
+    <string name="return_action_cancel">Cancel</string>
+
+    <!-- Material Return create -->
+    <string name="return_create_title">New Material Return</string>
+    <string name="return_field_date">Return Date *</string>
+    <string name="return_field_type">Return Type *</string>
+    <string name="return_field_supplier">Supplier</string>
+    <string name="return_field_to_store">To Store</string>
+    <string name="return_field_remarks">Remarks</string>
+    <string name="return_select_type">Select return type…</string>
+    <string name="return_select_supplier">Select supplier…</string>
+    <string name="return_select_to_store">Select destination store…</string>
+    <string name="return_lines_label">Items *</string>
+    <string name="return_add_line">Add Item</string>
+    <string name="return_lines_empty">No items yet. Tap "Add Item" to select materials.</string>
+    <string name="return_submit_save">Save Draft</string>
+    <string name="return_create_success">Return saved as draft.</string>
+    <string name="return_create_failed">Could not save return. Please try again.</string>
+    <string name="return_validation_lines">Add at least one line item.</string>
+
+    <!-- Return line item sheet -->
+    <string name="return_line_title">Add Item</string>
+    <string name="return_line_field_material">Material *</string>
+    <string name="return_line_select_material">Select material…</string>
+    <string name="return_line_field_qty">Return Qty *</string>
+    <string name="return_line_field_batch">Batch Number</string>
+    <string name="return_line_field_reason">Reason</string>
+    <string name="return_line_save">Add to Return</string>
+    <string name="return_line_validation_material">Pick a material.</string>
+    <string name="return_line_validation_qty">Quantity must be greater than 0.</string>
+
+    <!-- Stock Adjustments list / detail -->
+    <string name="adjustment_list_title">Stock Adjustments</string>
+    <string name="adjustment_list_subtitle">All adjustments across your stores</string>
+    <string name="adjustment_filter_all">All</string>
+    <string name="adjustment_status_draft">Draft</string>
+    <string name="adjustment_status_submitted">Submitted</string>
+    <string name="adjustment_status_approved">Approved</string>
+    <string name="adjustment_status_cancelled">Cancelled</string>
+    <string name="adjustment_add_new">New stock adjustment</string>
+    <string name="adjustment_empty">No adjustments yet. Tap + to record a stock adjustment.</string>
+
+    <string name="adjustment_detail_title">Stock Adjustment</string>
+    <string name="adjustment_detail_summary">Summary</string>
+    <string name="adjustment_detail_store">Store</string>
+    <string name="adjustment_detail_type">Adjustment Type</string>
+    <string name="adjustment_detail_total_qty">Total Qty</string>
+    <string name="adjustment_detail_items">Line Items</string>
+    <string name="adjustment_detail_no_items">No items recorded.</string>
+    <string name="adjustment_detail_remarks">Remarks</string>
+    <string name="adjustment_action_submit">Submit</string>
+    <string name="adjustment_action_approve">Approve</string>
+    <string name="adjustment_action_cancel">Cancel</string>
+
+    <!-- Stock Adjustment create -->
+    <string name="adjustment_create_title">New Stock Adjustment</string>
+    <string name="adjustment_field_date">Adjustment Date *</string>
+    <string name="adjustment_field_type">Adjustment Type *</string>
+    <string name="adjustment_field_remarks">Remarks</string>
+    <string name="adjustment_select_type">Select adjustment type…</string>
+    <string name="adjustment_lines_label">Items *</string>
+    <string name="adjustment_add_line">Add Item</string>
+    <string name="adjustment_lines_empty">No items yet. Tap "Add Item" to select materials.</string>
+    <string name="adjustment_submit_save">Save Draft</string>
+    <string name="adjustment_create_success">Adjustment saved as draft.</string>
+    <string name="adjustment_create_failed">Could not save adjustment. Please try again.</string>
+    <string name="adjustment_validation_lines">Add at least one line item.</string>
+
+    <!-- Adjustment line item sheet -->
+    <string name="adjustment_line_title">Add Item</string>
+    <string name="adjustment_line_subtitle">Use negative qty for write-offs</string>
+    <string name="adjustment_line_field_material">Material *</string>
+    <string name="adjustment_line_select_material">Select material…</string>
+    <string name="adjustment_line_field_qty">Adjusted Qty * (negative to reduce)</string>
+    <string name="adjustment_line_field_batch">Batch Number</string>
+    <string name="adjustment_line_field_reason">Reason</string>
+    <string name="adjustment_line_save">Add to Adjustment</string>
+    <string name="adjustment_line_validation_material">Pick a material.</string>
+    <string name="adjustment_line_validation_qty">Quantity cannot be zero.</string>
+
     <!-- History / Transaction Log tab -->
     <string name="history_title">Transaction History</string>
     <string name="history_subtitle">All stock movements across your stores</string>

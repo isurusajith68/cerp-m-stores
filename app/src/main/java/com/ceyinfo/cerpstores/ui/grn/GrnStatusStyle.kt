@@ -26,7 +26,7 @@ object GrnStatusStyle {
 
     private val tones = mapOf(
         "DRAFT"     to Tone("#F1F5F9", "#475569", R.string.grn_status_draft),
-        "SUBMITTED" to Tone("#DBEAFE", "#1D4ED8", R.string.grn_status_submitted),
+        "PENDING"   to Tone("#DBEAFE", "#1D4ED8", R.string.grn_status_submitted),
         "APPROVED"  to Tone("#D1FAE5", "#047857", R.string.grn_status_approved),
         "CANCELLED" to Tone("#FEE2E2", "#B91C1C", R.string.grn_status_cancelled),
         "REJECTED"  to Tone("#FEE2E2", "#B91C1C", R.string.grn_status_rejected),

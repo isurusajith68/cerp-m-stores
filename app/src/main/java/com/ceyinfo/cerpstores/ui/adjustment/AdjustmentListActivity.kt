@@ -1,7 +1,6 @@
-package com.ceyinfo.cerpstores.ui.issue
+package com.ceyinfo.cerpstores.ui.adjustment
 
 import android.content.Intent
-import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,32 +13,28 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ceyinfo.cerpstores.R
-import com.ceyinfo.cerpstores.data.model.Issue
+import com.ceyinfo.cerpstores.data.model.StockAdjustment
 import com.ceyinfo.cerpstores.data.remote.ApiClient
-import com.ceyinfo.cerpstores.databinding.ActivityIssueListBinding
-import com.ceyinfo.cerpstores.databinding.ItemIssueBinding
+import com.ceyinfo.cerpstores.databinding.ActivityAdjustmentListBinding
+import com.ceyinfo.cerpstores.databinding.ItemAdjustmentBinding
 import com.ceyinfo.cerpstores.ui.common.BottomNav
 import com.ceyinfo.cerpstores.ui.common.StorePickerSheet
 import com.ceyinfo.cerpstores.util.SessionManager
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-/**
- * Goods Issue list — paginated, status-filtered, pull-to-refresh.
- * Mirrors GrnListActivity exactly, adapted for the /issues endpoints.
- */
-class IssueListActivity : AppCompatActivity() {
+class AdjustmentListActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityIssueListBinding
+    private lateinit var binding: ActivityAdjustmentListBinding
 
     private var statusFilter: String? = null
 
-    private val items = mutableListOf<Issue>()
-    private val adapter = IssuesAdapter(items) { issue ->
+    private val items = mutableListOf<StockAdjustment>()
+    private val adapter = AdjustmentsAdapter(items) { adj ->
         startActivity(
-            Intent(this, IssueDetailActivity::class.java)
-                .putExtra(IssueDetailActivity.EXTRA_ISSUE_ID, issue.id)
-                .putExtra(IssueDetailActivity.EXTRA_ISSUE_NUMBER, issue.issueNumber)
+            Intent(this, AdjustmentDetailActivity::class.java)
+                .putExtra(AdjustmentDetailActivity.EXTRA_ADJUSTMENT_ID, adj.id)
+                .putExtra(AdjustmentDetailActivity.EXTRA_ADJUSTMENT_NUMBER, adj.adjustmentNumber)
         )
     }
 
@@ -54,37 +49,37 @@ class IssueListActivity : AppCompatActivity() {
         window.statusBarColor = android.graphics.Color.TRANSPARENT
         window.navigationBarColor = android.graphics.Color.TRANSPARENT
 
-        binding = ActivityIssueListBinding.inflate(layoutInflater)
+        binding = ActivityAdjustmentListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         binding.btnBack.setOnClickListener { finish() }
 
         val session = SessionManager(this)
-        val canCreate = session.canPerformAction("store_issue", "create")
+        val canCreate = session.canPerformAction("stock_adjustment", "create")
         binding.btnAdd.visibility = if (canCreate) View.VISIBLE else View.GONE
         binding.btnAdd.setOnClickListener {
             StorePickerSheet.show(
                 activity = this,
-                title = getString(R.string.action_goods_issue),
-                subtitle = getString(R.string.action_goods_issue_desc),
+                title = getString(R.string.module_adjustments),
+                subtitle = getString(R.string.module_adjustments_desc),
             ) { store ->
                 startActivity(
-                    Intent(this, IssueCreateActivity::class.java)
-                        .putExtra(IssueCreateActivity.EXTRA_STORE_ID, store.storeId)
-                        .putExtra(IssueCreateActivity.EXTRA_STORE_NAME, store.name)
+                    Intent(this, AdjustmentCreateActivity::class.java)
+                        .putExtra(AdjustmentCreateActivity.EXTRA_STORE_ID, store.storeId)
+                        .putExtra(AdjustmentCreateActivity.EXTRA_STORE_NAME, store.name)
                 )
             }
         }
 
         BottomNav.bind(binding.bottomNav.root, this, BottomNav.Tab.HOME)
 
-        binding.rvIssues.layoutManager = LinearLayoutManager(this)
-        binding.rvIssues.adapter = adapter
+        binding.rvAdjustments.layoutManager = LinearLayoutManager(this)
+        binding.rvAdjustments.adapter = adapter
 
         binding.swipeRefresh.setColorSchemeResources(R.color.primary)
         binding.swipeRefresh.setOnRefreshListener { reload() }
 
-        binding.rvIssues.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        binding.rvAdjustments.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(rv: RecyclerView, dx: Int, dy: Int) {
                 if (dy <= 0 || isLoading) return
                 val lm = rv.layoutManager as? LinearLayoutManager ?: return
@@ -104,11 +99,11 @@ class IssueListActivity : AppCompatActivity() {
 
         data class Filter(val code: String?, val label: String)
         val filters = listOf(
-            Filter(null,        getString(R.string.issue_filter_all)),
-            Filter("DRAFT",     getString(R.string.issue_status_draft)),
-            Filter("PENDING",   getString(R.string.issue_status_submitted)),
-            Filter("APPROVED",  getString(R.string.issue_status_approved)),
-            Filter("CANCELLED", getString(R.string.issue_status_cancelled)),
+            Filter(null,        getString(R.string.adjustment_filter_all)),
+            Filter("DRAFT",     getString(R.string.adjustment_status_draft)),
+            Filter("PENDING",   getString(R.string.adjustment_status_submitted)),
+            Filter("APPROVED",  getString(R.string.adjustment_status_approved)),
+            Filter("CANCELLED", getString(R.string.adjustment_status_cancelled)),
         )
 
         val dp = resources.displayMetrics.density
@@ -140,7 +135,7 @@ class IssueListActivity : AppCompatActivity() {
     }
 
     private fun paintChip(chip: TextView, isActive: Boolean) {
-        val bg = chip.background as? GradientDrawable ?: return
+        val bg = chip.background as? android.graphics.drawable.GradientDrawable ?: return
         if (isActive) {
             bg.setColor(ContextCompat.getColor(this, R.color.primary))
             bg.setStroke(0, 0)
@@ -174,7 +169,7 @@ class IssueListActivity : AppCompatActivity() {
 
         loadJob = lifecycleScope.launch {
             try {
-                val resp = ApiClient.getService(this@IssueListActivity).getIssues(
+                val resp = ApiClient.getService(this@AdjustmentListActivity).getAdjustments(
                     status = statusFilter,
                     page = targetPage,
                     limit = 20,
@@ -202,44 +197,43 @@ class IssueListActivity : AppCompatActivity() {
         }
     }
 
-    // ── Adapter ───────────────────────────────────────────────────
+    private class AdjustmentsAdapter(
+        private val rows: List<StockAdjustment>,
+        private val onTap: (StockAdjustment) -> Unit,
+    ) : RecyclerView.Adapter<AdjustmentsAdapter.VH>() {
 
-    private class IssuesAdapter(
-        private val rows: List<Issue>,
-        private val onTap: (Issue) -> Unit,
-    ) : RecyclerView.Adapter<IssuesAdapter.VH>() {
-
-        class VH(val b: ItemIssueBinding) : RecyclerView.ViewHolder(b.root)
+        class VH(val b: ItemAdjustmentBinding) : RecyclerView.ViewHolder(b.root)
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH =
-            VH(ItemIssueBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+            VH(ItemAdjustmentBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
         override fun getItemCount() = rows.size
 
         override fun onBindViewHolder(holder: VH, position: Int) {
-            val issue = rows[position]
+            val adj = rows[position]
             val b = holder.b
 
-            b.tvIssueNumber.text = issue.issueNumber
-            IssueStatusStyle.applyStatus(b.tvStatus, issue.status)
+            b.tvAdjustmentNumber.text = adj.adjustmentNumber
+            AdjustmentStatusStyle.applyStatus(b.tvStatus, adj.status)
 
-            // Department / issued-to — prefer structured name, fall back to freetext
-            val deptLabel = issue.departmentName?.takeIf { it.isNotBlank() }
-                ?: issue.toDepartment?.takeIf { it.isNotBlank() }
-                ?: "—"
-            val empLabel = issue.issuedToName?.takeIf { it.isNotBlank() }
-                ?: issue.issuedTo?.takeIf { it.isNotBlank() }
-            b.tvDepartment.text = if (empLabel != null) "$deptLabel → $empLabel" else deptLabel
+            b.tvStoreName.text = adj.storeName?.takeIf { it.isNotBlank() } ?: "—"
 
-            b.tvStore.text = listOfNotNull(
-                issue.storeName?.takeIf { it.isNotBlank() },
-                issue.businessUnitName?.takeIf { it.isNotBlank() },
-            ).joinToString(" · ").ifEmpty { "—" }
+            val typeLabel = when (adj.adjustmentType.lowercase()) {
+                "count_adjustment" -> "Count Adjustment"
+                "damage"           -> "Damage Write-off"
+                "expiry"           -> "Expiry Write-off"
+                "transfer_in"      -> "Transfer In"
+                "transfer_out"     -> "Transfer Out"
+                else               -> adj.adjustmentType.replace('_', ' ').replaceFirstChar { it.uppercase() }
+            }
+            b.tvAdjustmentType.text = typeLabel
 
-            b.tvDate.text = IssueStatusStyle.formatDate(issue.issueDate)
-            b.tvTotalQty.text = "Total Qty: ${IssueStatusStyle.formatQuantity(issue.totalQuantity)}"
+            b.tvDate.text = AdjustmentStatusStyle.formatDate(adj.adjustmentDate)
 
-            b.root.setOnClickListener { onTap(issue) }
+            val count = adj.itemsCount ?: 0
+            b.tvItemsCount.text = "$count item${if (count != 1) "s" else ""}"
+
+            b.root.setOnClickListener { onTap(adj) }
         }
     }
 }

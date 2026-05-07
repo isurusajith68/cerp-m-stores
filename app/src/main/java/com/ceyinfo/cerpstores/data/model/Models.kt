@@ -473,6 +473,104 @@ data class CreateTransferLineRequest(
     val remarks: String? = null
 )
 
+// ── Material Return ──────────────────────────────────────────────────────────
+
+data class MaterialReturn(
+    val id: String,
+    @SerializedName("return_number") val returnNumber: String,
+    @SerializedName("return_date") val returnDate: String? = null,
+    @SerializedName("return_type") val returnType: String,
+    @SerializedName("from_store_id") val fromStoreId: String,
+    @SerializedName("to_store_id") val toStoreId: String? = null,
+    @SerializedName("supplier_id") val supplierId: String? = null,
+    @SerializedName("grn_reference_id") val grnReferenceId: String? = null,
+    val status: String,
+    val remarks: String? = null,
+    @SerializedName("from_store_name") val fromStoreName: String? = null,
+    @SerializedName("to_store_name") val toStoreName: String? = null,
+    @SerializedName("supplier_name") val supplierName: String? = null,
+    @SerializedName("grn_reference_number") val grnReferenceNumber: String? = null,
+    @SerializedName("business_unit_id") val businessUnitId: String? = null,
+    @SerializedName("items_count") val itemsCount: Int? = null,
+    @SerializedName("created_at") val createdAt: String? = null,
+    @SerializedName("updated_at") val updatedAt: String? = null,
+    val items: List<ReturnLineItem>? = null
+)
+
+data class ReturnLineItem(
+    @SerializedName("return_detail_id") val returnDetailId: String,
+    @SerializedName("material_id") val materialId: String? = null,
+    @SerializedName("material_name") val materialName: String? = null,
+    @SerializedName("material_sku") val materialSku: String? = null,
+    @SerializedName("unit_symbol") val unitSymbol: String? = null,
+    @SerializedName("return_quantity") val returnQuantity: Double = 0.0,
+    @SerializedName("unit_price") val unitPrice: Double? = null,
+    @SerializedName("batch_number") val batchNumber: String? = null,
+    val reason: String? = null
+)
+
+data class CreateReturnRequest(
+    @SerializedName("from_store_id") val fromStoreId: String,
+    @SerializedName("to_store_id") val toStoreId: String? = null,
+    @SerializedName("supplier_id") val supplierId: String? = null,
+    @SerializedName("return_date") val returnDate: String,
+    @SerializedName("return_type") val returnType: String,
+    val remarks: String? = null,
+    val items: List<CreateReturnLineRequest>
+)
+
+data class CreateReturnLineRequest(
+    @SerializedName("material_id") val materialId: String,
+    @SerializedName("return_quantity") val returnQuantity: Double,
+    @SerializedName("batch_number") val batchNumber: String? = null,
+    @SerializedName("unit_price") val unitPrice: Double? = null,
+    val reason: String? = null
+)
+
+// ── Stock Adjustment ─────────────────────────────────────────────────────────
+
+data class StockAdjustment(
+    val id: String,
+    @SerializedName("adjustment_number") val adjustmentNumber: String,
+    @SerializedName("adjustment_date") val adjustmentDate: String? = null,
+    @SerializedName("store_id") val storeId: String,
+    @SerializedName("adjustment_type") val adjustmentType: String,
+    val status: String,
+    val remarks: String? = null,
+    @SerializedName("store_name") val storeName: String? = null,
+    @SerializedName("business_unit_id") val businessUnitId: String? = null,
+    @SerializedName("items_count") val itemsCount: Int? = null,
+    @SerializedName("created_at") val createdAt: String? = null,
+    @SerializedName("updated_at") val updatedAt: String? = null,
+    val items: List<AdjustmentLineItem>? = null
+)
+
+data class AdjustmentLineItem(
+    @SerializedName("adjustment_detail_id") val adjustmentDetailId: String,
+    @SerializedName("material_id") val materialId: String? = null,
+    @SerializedName("material_name") val materialName: String? = null,
+    @SerializedName("material_sku") val materialSku: String? = null,
+    @SerializedName("unit_symbol") val unitSymbol: String? = null,
+    @SerializedName("adjusted_quantity") val adjustedQuantity: Double = 0.0,
+    @SerializedName("batch_number") val batchNumber: String? = null,
+    val reason: String? = null
+)
+
+data class CreateAdjustmentRequest(
+    @SerializedName("store_id") val storeId: String,
+    @SerializedName("adjustment_date") val adjustmentDate: String,
+    @SerializedName("adjustment_type") val adjustmentType: String,
+    val remarks: String? = null,
+    val items: List<CreateAdjustmentLineRequest>
+)
+
+data class CreateAdjustmentLineRequest(
+    @SerializedName("material_id") val materialId: String,
+    @SerializedName("adjusted_quantity") val adjustedQuantity: Double,
+    @SerializedName("batch_number") val batchNumber: String? = null,
+    val reason: String? = null
+)
+
 /** Lightweight store entry used in the to-store picker. */
 data class StoreInfo(
     @SerializedName("store_id") val storeId: String,

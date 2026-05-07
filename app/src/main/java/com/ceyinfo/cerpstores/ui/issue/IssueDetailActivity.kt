@@ -169,7 +169,7 @@ class IssueDetailActivity : AppCompatActivity() {
                     )
                 }
             }
-            "SUBMITTED" -> {
+            "PENDING" -> {
                 if (session.canPerformAction("store_issue", "approve")) {
                     addActionButton(
                         label = getString(R.string.issue_action_approve),

@@ -17,7 +17,7 @@ object IssueStatusStyle {
 
     private val tones = mapOf(
         "DRAFT"     to Tone("#F1F5F9", "#475569", "Draft"),
-        "SUBMITTED" to Tone("#DBEAFE", "#1D4ED8", "Submitted"),
+        "PENDING"   to Tone("#DBEAFE", "#1D4ED8", "Submitted"),
         "APPROVED"  to Tone("#D1FAE5", "#047857", "Approved"),
         "CANCELLED" to Tone("#FEE2E2", "#B91C1C", "Cancelled"),
         "REJECTED"  to Tone("#FEE2E2", "#B91C1C", "Rejected"),

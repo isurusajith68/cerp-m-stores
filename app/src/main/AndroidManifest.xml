@@ -110,6 +110,32 @@
             android:name=".ui.transfer.TransferCreateActivity"
             android:theme="@style/Theme.Stores.NoActionBar" />
 
+        <activity
+            android:name=".ui.ret.ReturnListActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.Stores.NoActionBar" />
+
+        <activity
+            android:name=".ui.ret.ReturnDetailActivity"
+            android:theme="@style/Theme.Stores.NoActionBar" />
+
+        <activity
+            android:name=".ui.ret.ReturnCreateActivity"
+            android:theme="@style/Theme.Stores.NoActionBar" />
+
+        <activity
+            android:name=".ui.adjustment.AdjustmentListActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.Stores.NoActionBar" />
+
+        <activity
+            android:name=".ui.adjustment.AdjustmentDetailActivity"
+            android:theme="@style/Theme.Stores.NoActionBar" />
+
+        <activity
+            android:name=".ui.adjustment.AdjustmentCreateActivity"
+            android:theme="@style/Theme.Stores.NoActionBar" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"

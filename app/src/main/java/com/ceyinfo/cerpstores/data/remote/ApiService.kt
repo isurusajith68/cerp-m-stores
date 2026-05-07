@@ -18,6 +18,11 @@ import com.ceyinfo.cerpstores.data.model.MyRoleData
 import com.ceyinfo.cerpstores.data.model.MyStore
 import com.ceyinfo.cerpstores.data.model.CreateVerificationRequest
 import com.ceyinfo.cerpstores.data.model.StoreInfo
+import com.ceyinfo.cerpstores.data.model.AdjustmentLineItem
+import com.ceyinfo.cerpstores.data.model.CreateAdjustmentRequest
+import com.ceyinfo.cerpstores.data.model.CreateReturnRequest
+import com.ceyinfo.cerpstores.data.model.MaterialReturn
+import com.ceyinfo.cerpstores.data.model.StockAdjustment
 import com.ceyinfo.cerpstores.data.model.StockTransaction
 import com.ceyinfo.cerpstores.data.model.Supplier
 import com.ceyinfo.cerpstores.data.model.Transfer
@@ -85,6 +90,50 @@ interface ApiService {
         @Path("id") id: String,
         @Body request: TransitionRequest,
     ): Response<ApiResponse<Grn>>
+
+    // ── Store Mobile: Material Returns ───────────────────────────────
+    @GET("store-mobile/returns")
+    suspend fun getReturns(
+        @Query("store_id") storeId: String? = null,
+        @Query("status") status: String? = null,
+        @Query("search") search: String? = null,
+        @Query("page") page: Int = 1,
+        @Query("limit") limit: Int = 20
+    ): Response<ApiResponse<List<MaterialReturn>>>
+
+    @GET("store-mobile/returns/{id}")
+    suspend fun getReturn(@Path("id") id: String): Response<ApiResponse<MaterialReturn>>
+
+    @POST("store-mobile/returns")
+    suspend fun createReturn(@Body request: CreateReturnRequest): Response<ApiResponse<MaterialReturn>>
+
+    @PATCH("store-mobile/returns/{id}/transition")
+    suspend fun transitionReturn(
+        @Path("id") id: String,
+        @Body request: TransitionRequest
+    ): Response<ApiResponse<MaterialReturn>>
+
+    // ── Store Mobile: Stock Adjustments ───────────────────────────────
+    @GET("store-mobile/adjustments")
+    suspend fun getAdjustments(
+        @Query("store_id") storeId: String? = null,
+        @Query("status") status: String? = null,
+        @Query("search") search: String? = null,
+        @Query("page") page: Int = 1,
+        @Query("limit") limit: Int = 20
+    ): Response<ApiResponse<List<StockAdjustment>>>
+
+    @GET("store-mobile/adjustments/{id}")
+    suspend fun getAdjustment(@Path("id") id: String): Response<ApiResponse<StockAdjustment>>
+
+    @POST("store-mobile/adjustments")
+    suspend fun createAdjustment(@Body request: CreateAdjustmentRequest): Response<ApiResponse<StockAdjustment>>
+
+    @PATCH("store-mobile/adjustments/{id}/transition")
+    suspend fun transitionAdjustment(
+        @Path("id") id: String,
+        @Body request: TransitionRequest
+    ): Response<ApiResponse<StockAdjustment>>
 
     // ── Store Mobile: Transactions (History) ─────────────────────────
     @GET("store-mobile/transactions")

@@ -190,7 +190,7 @@ class GrnDetailActivity : AppCompatActivity() {
                 ActionSpec("submit", R.string.grn_action_submit, isPrimary = true),
                 ActionSpec("cancel", R.string.grn_action_cancel, isPrimary = false),
             )
-            "SUBMITTED" -> listOf(
+            "PENDING" -> listOf(
                 ActionSpec("approve", R.string.grn_action_approve, isPrimary = true),
                 ActionSpec("recall",  R.string.grn_action_recall,  isPrimary = false),
                 ActionSpec("cancel",  R.string.grn_action_cancel,  isPrimary = false),

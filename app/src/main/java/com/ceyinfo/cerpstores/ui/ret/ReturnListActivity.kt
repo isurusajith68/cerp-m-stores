@@ -1,7 +1,6 @@
-package com.ceyinfo.cerpstores.ui.issue
+package com.ceyinfo.cerpstores.ui.ret
 
 import android.content.Intent
-import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,32 +13,28 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ceyinfo.cerpstores.R
-import com.ceyinfo.cerpstores.data.model.Issue
+import com.ceyinfo.cerpstores.data.model.MaterialReturn
 import com.ceyinfo.cerpstores.data.remote.ApiClient
-import com.ceyinfo.cerpstores.databinding.ActivityIssueListBinding
-import com.ceyinfo.cerpstores.databinding.ItemIssueBinding
+import com.ceyinfo.cerpstores.databinding.ActivityReturnListBinding
+import com.ceyinfo.cerpstores.databinding.ItemReturnBinding
 import com.ceyinfo.cerpstores.ui.common.BottomNav
 import com.ceyinfo.cerpstores.ui.common.StorePickerSheet
 import com.ceyinfo.cerpstores.util.SessionManager
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-/**
- * Goods Issue list — paginated, status-filtered, pull-to-refresh.
- * Mirrors GrnListActivity exactly, adapted for the /issues endpoints.
- */
-class IssueListActivity : AppCompatActivity() {
+class ReturnListActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityIssueListBinding
+    private lateinit var binding: ActivityReturnListBinding
 
     private var statusFilter: String? = null
 
-    private val items = mutableListOf<Issue>()
-    private val adapter = IssuesAdapter(items) { issue ->
+    private val items = mutableListOf<MaterialReturn>()
+    private val adapter = ReturnsAdapter(items) { ret ->
         startActivity(
-            Intent(this, IssueDetailActivity::class.java)
-                .putExtra(IssueDetailActivity.EXTRA_ISSUE_ID, issue.id)
-                .putExtra(IssueDetailActivity.EXTRA_ISSUE_NUMBER, issue.issueNumber)
+            Intent(this, ReturnDetailActivity::class.java)
+                .putExtra(ReturnDetailActivity.EXTRA_RETURN_ID, ret.id)
+                .putExtra(ReturnDetailActivity.EXTRA_RETURN_NUMBER, ret.returnNumber)
         )
     }
 
@@ -54,37 +49,37 @@ class IssueListActivity : AppCompatActivity() {
         window.statusBarColor = android.graphics.Color.TRANSPARENT
         window.navigationBarColor = android.graphics.Color.TRANSPARENT
 
-        binding = ActivityIssueListBinding.inflate(layoutInflater)
+        binding = ActivityReturnListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         binding.btnBack.setOnClickListener { finish() }
 
         val session = SessionManager(this)
-        val canCreate = session.canPerformAction("store_issue", "create")
+        val canCreate = session.canPerformAction("material_return", "create")
         binding.btnAdd.visibility = if (canCreate) View.VISIBLE else View.GONE
         binding.btnAdd.setOnClickListener {
             StorePickerSheet.show(
                 activity = this,
-                title = getString(R.string.action_goods_issue),
-                subtitle = getString(R.string.action_goods_issue_desc),
+                title = getString(R.string.action_return),
+                subtitle = getString(R.string.action_return_desc),
             ) { store ->
                 startActivity(
-                    Intent(this, IssueCreateActivity::class.java)
-                        .putExtra(IssueCreateActivity.EXTRA_STORE_ID, store.storeId)
-                        .putExtra(IssueCreateActivity.EXTRA_STORE_NAME, store.name)
+                    Intent(this, ReturnCreateActivity::class.java)
+                        .putExtra(ReturnCreateActivity.EXTRA_STORE_ID, store.storeId)
+                        .putExtra(ReturnCreateActivity.EXTRA_STORE_NAME, store.name)
                 )
             }
         }
 
         BottomNav.bind(binding.bottomNav.root, this, BottomNav.Tab.HOME)
 
-        binding.rvIssues.layoutManager = LinearLayoutManager(this)
-        binding.rvIssues.adapter = adapter
+        binding.rvReturns.layoutManager = LinearLayoutManager(this)
+        binding.rvReturns.adapter = adapter
 
         binding.swipeRefresh.setColorSchemeResources(R.color.primary)
         binding.swipeRefresh.setOnRefreshListener { reload() }
 
-        binding.rvIssues.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        binding.rvReturns.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(rv: RecyclerView, dx: Int, dy: Int) {
                 if (dy <= 0 || isLoading) return
                 val lm = rv.layoutManager as? LinearLayoutManager ?: return
@@ -104,11 +99,11 @@ class IssueListActivity : AppCompatActivity() {
 
         data class Filter(val code: String?, val label: String)
         val filters = listOf(
-            Filter(null,        getString(R.string.issue_filter_all)),
-            Filter("DRAFT",     getString(R.string.issue_status_draft)),
-            Filter("PENDING",   getString(R.string.issue_status_submitted)),
-            Filter("APPROVED",  getString(R.string.issue_status_approved)),
-            Filter("CANCELLED", getString(R.string.issue_status_cancelled)),
+            Filter(null,        getString(R.string.return_filter_all)),
+            Filter("DRAFT",     getString(R.string.return_status_draft)),
+            Filter("PENDING",   getString(R.string.return_status_submitted)),
+            Filter("APPROVED",  getString(R.string.return_status_approved)),
+            Filter("CANCELLED", getString(R.string.return_status_cancelled)),
         )
 
         val dp = resources.displayMetrics.density
@@ -140,7 +135,7 @@ class IssueListActivity : AppCompatActivity() {
     }
 
     private fun paintChip(chip: TextView, isActive: Boolean) {
-        val bg = chip.background as? GradientDrawable ?: return
+        val bg = chip.background as? android.graphics.drawable.GradientDrawable ?: return
         if (isActive) {
             bg.setColor(ContextCompat.getColor(this, R.color.primary))
             bg.setStroke(0, 0)
@@ -174,7 +169,7 @@ class IssueListActivity : AppCompatActivity() {
 
         loadJob = lifecycleScope.launch {
             try {
-                val resp = ApiClient.getService(this@IssueListActivity).getIssues(
+                val resp = ApiClient.getService(this@ReturnListActivity).getReturns(
                     status = statusFilter,
                     page = targetPage,
                     limit = 20,
@@ -202,44 +197,40 @@ class IssueListActivity : AppCompatActivity() {
         }
     }
 
-    // ── Adapter ───────────────────────────────────────────────────
+    private class ReturnsAdapter(
+        private val rows: List<MaterialReturn>,
+        private val onTap: (MaterialReturn) -> Unit,
+    ) : RecyclerView.Adapter<ReturnsAdapter.VH>() {
 
-    private class IssuesAdapter(
-        private val rows: List<Issue>,
-        private val onTap: (Issue) -> Unit,
-    ) : RecyclerView.Adapter<IssuesAdapter.VH>() {
-
-        class VH(val b: ItemIssueBinding) : RecyclerView.ViewHolder(b.root)
+        class VH(val b: ItemReturnBinding) : RecyclerView.ViewHolder(b.root)
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH =
-            VH(ItemIssueBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+            VH(ItemReturnBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
         override fun getItemCount() = rows.size
 
         override fun onBindViewHolder(holder: VH, position: Int) {
-            val issue = rows[position]
+            val ret = rows[position]
             val b = holder.b
 
-            b.tvIssueNumber.text = issue.issueNumber
-            IssueStatusStyle.applyStatus(b.tvStatus, issue.status)
+            b.tvReturnNumber.text = ret.returnNumber
+            ReturnStatusStyle.applyStatus(b.tvStatus, ret.status)
 
-            // Department / issued-to — prefer structured name, fall back to freetext
-            val deptLabel = issue.departmentName?.takeIf { it.isNotBlank() }
-                ?: issue.toDepartment?.takeIf { it.isNotBlank() }
-                ?: "—"
-            val empLabel = issue.issuedToName?.takeIf { it.isNotBlank() }
-                ?: issue.issuedTo?.takeIf { it.isNotBlank() }
-            b.tvDepartment.text = if (empLabel != null) "$deptLabel → $empLabel" else deptLabel
+            b.tvFromStore.text = ret.fromStoreName?.takeIf { it.isNotBlank() } ?: "—"
 
-            b.tvStore.text = listOfNotNull(
-                issue.storeName?.takeIf { it.isNotBlank() },
-                issue.businessUnitName?.takeIf { it.isNotBlank() },
-            ).joinToString(" · ").ifEmpty { "—" }
+            val typeLabel = when (ret.returnType.lowercase()) {
+                "to_supplier" -> "To Supplier"
+                "to_store"    -> "To Store"
+                else          -> ret.returnType
+            }
+            b.tvReturnType.text = typeLabel
 
-            b.tvDate.text = IssueStatusStyle.formatDate(issue.issueDate)
-            b.tvTotalQty.text = "Total Qty: ${IssueStatusStyle.formatQuantity(issue.totalQuantity)}"
+            b.tvDate.text = ReturnStatusStyle.formatDate(ret.returnDate)
 
-            b.root.setOnClickListener { onTap(issue) }
+            val count = ret.itemsCount ?: 0
+            b.tvItemsCount.text = "$count item${if (count != 1) "s" else ""}"
+
+            b.root.setOnClickListener { onTap(ret) }
         }
     }
 }
